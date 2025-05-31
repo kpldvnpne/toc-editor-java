@@ -13,15 +13,19 @@ public class Main {
       PdfWriter writer = new PdfWriter(outputFilename);
 
       try(PdfDocument document = new PdfDocument(reader, writer)) {
-        var outline = document.getOutlines(true);
-        outline.removeOutline();
-        document.initializeOutlines();
-        // for (var child: outline.getAllChildren()) {
+        var root = document.getOutlines(true);
+        var firstChild = root.getAllChildren().get(0);
+        firstChild.removeOutline();
+
+        // root.removeOutline();
+        // document.initializeOutlines();
+        // for (var child: root.getAllChildren()) {
         //   child.removeOutline();
         // }
+        // var childOutline = root.addOutline("Go to page 12");
         // var page = document.getPage(12);
         // var destination = PdfExplicitDestination.createFit(page);
-        // outline.addDestination(destination);
+        // childOutline.addDestination(destination);
         // System.out.println("Added some destination to outline");
       }
     } catch (Exception exception) {
