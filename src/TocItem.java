@@ -1,3 +1,7 @@
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
+
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfOutline;
 import com.itextpdf.kernel.pdf.navigation.PdfExplicitDestination;
@@ -14,6 +18,24 @@ record TocItem(String label, int pageNum, TocItem[] children) {
                 child.addChildrenTo(childOutline, document);
             }
         }
+    }
+
+    private MutableTreeNode toNode() {
+        var top = new DefaultMutableTreeNode(this.label);
+
+        if (this.children != null) {
+            for (var child: this.children) {
+                var childNode = child.toNode();
+                top.add(childNode);
+            }
+        }
+        return top;
+    }
+
+    public JTree toJTree() {
+        var top = this.toNode();
+        var tree = new JTree(top);
+        return tree;
     }
 
     static TocItem outline = new TocItem("", 0, new TocItem[] {

@@ -46,6 +46,12 @@ public class Main {
 
     panel.add(outputPanel);
 
+    // Tree
+    JTree tree = TocItem.outline.toJTree();
+    JScrollPane treeView = new JScrollPane(tree);
+    panel.add(treeView);
+
+    // Add TOC button
     JButton addTocButton = new JButton("Add TOC");
     panel.add(addTocButton);
 
