@@ -14,12 +14,11 @@ public class Main {
 
       try(PdfDocument document = new PdfDocument(reader, writer)) {
         var root = document.getOutlines(true);
-        var firstChild = root.getAllChildren().get(0);
-        firstChild.removeOutline();
-        firstChild = root.getAllChildren().get(0);
-        firstChild.removeOutline();
-        firstChild = root.getAllChildren().get(0);
-        firstChild.removeOutline();
+
+        // Remove every child
+        while (!root.getAllChildren().isEmpty()) {
+          root.getAllChildren().get(0).removeOutline();
+        }
 
         // root.removeOutline();
         // document.initializeOutlines();
