@@ -22,12 +22,29 @@ public class Main {
 
     // Add content to the window
     JPanel panel = new JPanel();
+    panel.setBounds(0, 0, 400, 200);
+    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     frame.getContentPane().add(panel);
-    JButton inputButton = new JButton("Select Input Destination:");
-    panel.add(inputButton);
 
+    // Input Panel
+    JPanel inputPanel = new JPanel();
+    inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.X_AXIS));
+    JButton inputButton = new JButton("Select Input Destination:");
+    inputPanel.add(inputButton);
+    JLabel inputFileText = new JLabel();
+    inputPanel.add(inputFileText);
+
+    panel.add(inputPanel);
+
+    // Output Panel
+    JPanel outputPanel = new JPanel();
+    outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.X_AXIS));
     JButton outputButton = new JButton("Select Output Destination:");
-    panel.add(outputButton);
+    outputPanel.add(outputButton);
+    JLabel outputFileText = new JLabel();
+    outputPanel.add(outputFileText);
+
+    panel.add(outputPanel);
 
     inputButton.addActionListener(new ActionListener() {
       @Override
@@ -35,7 +52,8 @@ public class Main {
         var result = fileChooser.showOpenDialog(frame);
 
         if (result == JFileChooser.APPROVE_OPTION) {
-          System.out.println(fileChooser.getSelectedFile());
+          String filepath = fileChooser.getSelectedFile().getAbsolutePath();
+          inputFileText.setText(filepath);
         }
       }
     });
@@ -46,7 +64,8 @@ public class Main {
         var result = fileChooser.showSaveDialog(frame);
 
         if (result == JFileChooser.APPROVE_OPTION) {
-          System.out.println(fileChooser.getSelectedFile());
+          String filepath = fileChooser.getSelectedFile().getAbsolutePath();
+          outputFileText.setText(filepath);
         }
       }
     });
