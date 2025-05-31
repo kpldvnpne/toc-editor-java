@@ -2,11 +2,29 @@
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.pdf.navigation.PdfExplicitDestination;
 
+import javax.swing.*;
 public class Main {
 
+  private static void createAndShowGUI() {
+    JFrame frame = new JFrame("TOC Creator");
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    JLabel label = new JLabel("Hello World!");
+    frame.getContentPane().add(label);
+
+    frame.pack();
+    frame.setVisible(true);
+  }
+
   public static void main(String[] args) {
+    javax.swing.SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        createAndShowGUI();
+      }
+    });
+
     String inputFilename = "/Users/kapildev/Downloads/ielts 15 academic/Cambridge 15 - Full Version.pdf";
     String outputFilename = "/Users/kapildev/Downloads/ielts 15 academic/Cambridge 15 - Full Version - JAVA TOC.pdf";
     try {
