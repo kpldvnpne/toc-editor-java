@@ -32,14 +32,22 @@ public class Main {
     inputButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        fileChooser.showOpenDialog(frame);
+        var result = fileChooser.showOpenDialog(frame);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+          System.out.println(fileChooser.getSelectedFile());
+        }
       }
     });
 
     outputButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        fileChooser.showSaveDialog(frame);
+        var result = fileChooser.showSaveDialog(frame);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+          System.out.println(fileChooser.getSelectedFile());
+        }
       }
     });
 
