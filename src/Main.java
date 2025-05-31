@@ -46,11 +46,8 @@ public class Main {
 
     panel.add(outputPanel);
 
-    // Runnable onFileSelect = () -> {
-    //   if (!inputFileText.getText().isBlank() && !outputFileText.getText().isBlank()) {
-    //     addTOC(inputFileText.getText(), outputFileText.getText());
-    //   }
-    // };
+    JButton addTocButton = new JButton("Add TOC");
+    panel.add(addTocButton);
 
     inputButton.addActionListener((ActionEvent e) -> {
       var result = fileChooser.showOpenDialog(frame);
@@ -67,10 +64,12 @@ public class Main {
       if (result == JFileChooser.APPROVE_OPTION) {
         String filepath = fileChooser.getSelectedFile().getAbsolutePath();
         outputFileText.setText(filepath);
+      }
+    });
 
-        if (!inputFileText.getText().isBlank() && !outputFileText.getText().isBlank()) {
-          addTOC(inputFileText.getText(), outputFileText.getText());
-        }
+    addTocButton.addActionListener((ActionEvent e) -> {
+      if (!inputFileText.getText().isBlank() && !outputFileText.getText().isBlank()) {
+        addTOC(inputFileText.getText(), outputFileText.getText());
       }
     });
 
