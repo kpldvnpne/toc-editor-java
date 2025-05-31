@@ -2,4 +2,4 @@
 
 ./build.sh
 cd bin
-java Main
+java -cp "../lib/try.jar:." Main
