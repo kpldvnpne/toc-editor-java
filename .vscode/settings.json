@@ -1,6 +1,10 @@
 {
   "java.project.referencedLibraries": [
-    "lib/itext/kernel-9.2.0.jar",
-    "lib/try.jar"
+    // "lib/itext/kernel-9.2.0.jar",
+    // "lib/itext/io-9.2.0.jar",
+    // "lib/itext/layout-9.2.0.jar",
+    // "lib/itext/bouncy-castle-adapter-9.2.0.jar",
+    // "lib/try.jar",
+    "lib/**/*.jar",
   ]
 }
