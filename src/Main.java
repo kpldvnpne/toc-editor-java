@@ -21,16 +21,27 @@ public class Main {
     fileChooser.setFileFilter(filter);
 
     // Add content to the window
-    JButton button = new JButton("Select File:");
-    frame.getContentPane().add(button);
+    JPanel panel = new JPanel();
+    frame.getContentPane().add(panel);
+    JButton inputButton = new JButton("Select Input Destination:");
+    panel.add(inputButton);
 
-    button.addActionListener(new ActionListener() {
+    JButton outputButton = new JButton("Select Output Destination:");
+    panel.add(outputButton);
+
+    inputButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
         fileChooser.showOpenDialog(frame);
       }
     });
 
+    outputButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        fileChooser.showSaveDialog(frame);
+      }
+    });
 
     // Display the window
     frame.pack();
