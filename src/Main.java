@@ -3,16 +3,36 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 public class Main {
 
   private static void createAndShowGUI() {
+    // Create and setup the window
     JFrame frame = new JFrame("TOC Creator");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    JLabel label = new JLabel("Hello World!");
-    frame.getContentPane().add(label);
+    // File chooser
+    JFileChooser fileChooser = new JFileChooser();
+    var filter = new FileNameExtensionFilter("Only PDF Files", "pdf");
+    fileChooser.setFileFilter(filter);
 
+    // Add content to the window
+    JButton button = new JButton("Select File:");
+    frame.getContentPane().add(button);
+
+    button.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        fileChooser.showOpenDialog(frame);
+      }
+    });
+
+
+    // Display the window
     frame.pack();
     frame.setVisible(true);
   }
