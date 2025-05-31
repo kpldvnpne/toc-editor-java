@@ -3,6 +3,7 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -71,7 +72,7 @@ public class Main {
     });
 
     // Display the window
-    frame.pack();
+    frame.setSize(new Dimension(800, 400));
     frame.setVisible(true);
   }
 
