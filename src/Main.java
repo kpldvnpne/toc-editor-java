@@ -19,11 +19,14 @@ public class Main {
         while (root.getAllChildren().size() > 1) {
           root.getAllChildren().get(0).removeOutline();
         }
-        var childOutline = root.addOutline("Go to page 12");
+        var childOutline = root.addOutline("Go to page 12", 1);
         var page = document.getPage(12);
         var destination = PdfExplicitDestination.createFit(page);
         childOutline.addDestination(destination);
         System.out.println("Added some destination to outline");
+
+        // Remove the first element, that we didn't remove because it does not work without it
+        root.getAllChildren().get(0).removeOutline();
       }
     } catch (Exception exception) {
       System.out.println("Could not open the file");
