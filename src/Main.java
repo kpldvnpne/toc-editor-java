@@ -5,7 +5,6 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -47,26 +46,30 @@ public class Main {
 
     panel.add(outputPanel);
 
-    inputButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        var result = fileChooser.showOpenDialog(frame);
+    // Runnable onFileSelect = () -> {
+    //   if (!inputFileText.getText().isBlank() && !outputFileText.getText().isBlank()) {
+    //     addTOC(inputFileText.getText(), outputFileText.getText());
+    //   }
+    // };
 
-        if (result == JFileChooser.APPROVE_OPTION) {
-          String filepath = fileChooser.getSelectedFile().getAbsolutePath();
-          inputFileText.setText(filepath);
-        }
+    inputButton.addActionListener((ActionEvent e) -> {
+      var result = fileChooser.showOpenDialog(frame);
+
+      if (result == JFileChooser.APPROVE_OPTION) {
+        String filepath = fileChooser.getSelectedFile().getAbsolutePath();
+        inputFileText.setText(filepath);
       }
     });
 
-    outputButton.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-        var result = fileChooser.showSaveDialog(frame);
+    outputButton.addActionListener((ActionEvent e) -> {
+      var result = fileChooser.showSaveDialog(frame);
 
-        if (result == JFileChooser.APPROVE_OPTION) {
-          String filepath = fileChooser.getSelectedFile().getAbsolutePath();
-          outputFileText.setText(filepath);
+      if (result == JFileChooser.APPROVE_OPTION) {
+        String filepath = fileChooser.getSelectedFile().getAbsolutePath();
+        outputFileText.setText(filepath);
+
+        if (!inputFileText.getText().isBlank() && !outputFileText.getText().isBlank()) {
+          addTOC(inputFileText.getText(), outputFileText.getText());
         }
       }
     });
@@ -76,16 +79,7 @@ public class Main {
     frame.setVisible(true);
   }
 
-  public static void main(String[] args) {
-    javax.swing.SwingUtilities.invokeLater(new Runnable() {
-      @Override
-      public void run() {
-        createAndShowGUI();
-      }
-    });
-
-    String inputFilename = "/Users/kapildev/Downloads/ielts 15 academic/Cambridge 15 - Full Version.pdf";
-    String outputFilename = "/Users/kapildev/Downloads/ielts 15 academic/Cambridge 15 - Full Version - JAVA TOC.pdf";
+  public static void addTOC(String inputFilename, String outputFilename) {
     try {
       PdfReader reader = new PdfReader(inputFilename);
       PdfWriter writer = new PdfWriter(outputFilename);
@@ -109,5 +103,14 @@ public class Main {
       System.out.println("Could not open the file");
       exception.printStackTrace();
     }
+  }
+
+  public static void main(String[] args) {
+    javax.swing.SwingUtilities.invokeLater(new Runnable() {
+      @Override
+      public void run() {
+        createAndShowGUI();
+      }
+    });
   }
 }
