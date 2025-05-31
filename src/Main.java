@@ -16,6 +16,10 @@ public class Main {
         var root = document.getOutlines(true);
         var firstChild = root.getAllChildren().get(0);
         firstChild.removeOutline();
+        firstChild = root.getAllChildren().get(0);
+        firstChild.removeOutline();
+        firstChild = root.getAllChildren().get(0);
+        firstChild.removeOutline();
 
         // root.removeOutline();
         // document.initializeOutlines();
