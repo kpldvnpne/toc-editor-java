@@ -74,10 +74,11 @@ public class Main {
     });
 
     addTocButton.addActionListener((ActionEvent e) -> {
-      printTOC();
-      // if (!inputFileText.getText().isBlank() && !outputFileText.getText().isBlank()) {
-      //   addTOC(inputFileText.getText(), outputFileText.getText());
-      // }
+      if (!inputFileText.getText().isBlank() && !outputFileText.getText().isBlank()) {
+        addTOC(inputFileText.getText(), outputFileText.getText());
+      } else {
+        JOptionPane.showMessageDialog(null, "You don't have either input file or output file selected");
+      }
     });
 
     // Display the window
@@ -85,9 +86,9 @@ public class Main {
     frame.setVisible(true);
   }
 
-  private static void printTOC() {
-    TocItem.outline.print();
-  }
+  // private static void printTOC() {
+  //   TocItem.outline.print();
+  // }
 
   private static void addTOC(String inputFilename, String outputFilename) {
     try {
