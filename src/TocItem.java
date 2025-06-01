@@ -1,5 +1,4 @@
 import java.awt.Component;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import javax.swing.*;
@@ -188,13 +187,10 @@ class TocItem {
             this.tocItem.label = label;
             this.tocItem.pageNum = pageNum;
 
-            // TODO: Then, when the "ADD TOC" button is clicked, use it to create the TOC
-
             return this.tocItem;
         }
     }
 
-    // TODO: Get this from the file itself
     static TocItem outline = new TocItem("", 0, new TocItem[] {
         new TocItem(
             "Cover",
