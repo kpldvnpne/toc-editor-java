@@ -114,8 +114,6 @@ record TocItem(String label, int pageNum, TocItem[] children) {
             String label = this.labelField.getText();
             int pageNum = Integer.parseInt(this.pageNumField.getText());
 
-            System.out.println("Invoked getCellEditorValue()");
-            System.out.println(label + " " + pageNum);
             var updatedTocItem = this.tocItem.update(label, pageNum);
 
             // TODO: Update the list (TOC) as well. Then, when the "ADD TOC" button is clicked, use it to create the TOC
