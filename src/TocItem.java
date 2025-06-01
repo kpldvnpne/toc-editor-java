@@ -7,6 +7,26 @@ import com.itextpdf.kernel.pdf.PdfOutline;
 import com.itextpdf.kernel.pdf.navigation.PdfExplicitDestination;
 
 record TocItem(String label, int pageNum, TocItem[] children) {
+    public TocItem updateLabel(String newLabel) {
+        return new TocItem(
+            newLabel,
+            this.pageNum,
+            this.children
+        );
+    }
+
+    public TocItem updatePageNum(int newPageNum) {
+        return new TocItem(
+            this.label,
+            newPageNum,
+            children
+        );
+    }
+
+    public TocItem update(String newLabel, int newPageNum) {
+        return this.updateLabel(newLabel).updatePageNum(newPageNum);
+    }
+
     public void addChildrenTo(PdfOutline root, PdfDocument document) {
         for (var child: this.children) {
             var page = document.getPage(child.pageNum);
@@ -61,9 +81,13 @@ record TocItem(String label, int pageNum, TocItem[] children) {
     }
 
     public class LabelAndPageNumEditor extends DefaultTreeCellEditor {
+        private TocItem tocItem;
+        private JTextField labelField;
+        private JTextField pageNumField;
 
         public LabelAndPageNumEditor(JTree tree, DefaultTreeCellRenderer renderer) {
             super(tree, renderer);
+            this.tocItem = null;
         }
 
         @Override
@@ -72,12 +96,25 @@ record TocItem(String label, int pageNum, TocItem[] children) {
             var panel = new JPanel();
             var node = (DefaultMutableTreeNode) value;
             var tocItem = (TocItem) node.getUserObject();
-            var labelField = new JTextField(tocItem.label);
-            var pageNumField = new JTextField("" + tocItem.pageNum);
+            this.tocItem = tocItem;
+            this.labelField = new JTextField(this.tocItem.label); // TODO: Make one editable at a time
+
+            this.pageNumField = new JTextField("" + this.tocItem.pageNum);
+
             panel.add(labelField);
             panel.add(pageNumField);
 
             return panel;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            String label = this.labelField.getText();
+            int pageNum = Integer.parseInt(this.pageNumField.getText());
+
+            System.out.println("Invoked getCellEditorValue()");
+            System.out.println(label + " " + pageNum);
+            return this.tocItem.update(label, pageNum);
         }
     }
 
