@@ -24,8 +24,20 @@ class TocItem {
             return 0;
         }
 
+        var pdfObject = destination.getPdfObject();
+        if (!(pdfObject instanceof PdfArray)) {
+            // Can't find the page number
+            return 0;
+        }
+
         PdfArray pdfArray = (PdfArray) destination.getPdfObject();
         var dictionary = pdfArray.getAsDictionary(0);
+
+        if (dictionary == null) {
+            // Can't find the dictionary
+            return 0;
+        }
+
         int pageNum = document.getPageNumber(dictionary);
         return pageNum;
     }
