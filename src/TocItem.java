@@ -18,23 +18,61 @@ class TocItem {
         return TocItem.fromOutline(outline, document);
     }
 
+    private static int getPageNumber(PdfOutline outline, PdfDocument document) {
+        var destination = outline.getDestination();
+        if (destination == null) {
+            return 0;
+        }
+
+        PdfArray pdfArray = (PdfArray) destination.getPdfObject();
+        var dictionary = pdfArray.getAsDictionary(0);
+        int pageNum = document.getPageNumber(dictionary);
+        return pageNum;
+    }
+
     private static TocItem fromOutline(PdfOutline outline, PdfDocument document) {
+        var label = outline.getTitle();
+        var pageNum = getPageNumber(outline, document);
+        // System.out.println("Label: " + outline.getTitle() + "; " + "Page Num: "  + pageNum);
+
         var destination = outline.getDestination();
 
         // If destination is null, it is the root
         if (destination != null) {
-            var pdfObject = destination.getPdfObject();
+            // PdfDictionary content = outline.getContent();
+            // for (var key: content.keySet()) {
+            //     var value = content.get(key);
+            //     System.out.print(key + ": " + value + " [" + value.getClass().getSimpleName() + "]");
+            //     System.out.print(", ");
+            // }
+            // System.out.println();
 
-            // TODO: Does this work to get the pageNumber? Also use getContent()
-            if (pdfObject instanceof PdfDictionary) {
-                System.out.println("Is part of dictionary");
-                PdfDictionary dictionary = (PdfDictionary) pdfObject;
-                for (var key: dictionary.keySet()) {
-                    System.out.println(key);
-                }
-            } else {
-                System.out.println("Don't know the type of PdfObject");
-            }
+            // var dictionary = (PdfPage) destination.getDestinationPage(null);
+
+            // System.out.println(outline.getTitle() + ": " + document.getPageNumber(dictionary));
+
+            // if (destination instanceof PdfExplicitDestination) {
+            //     var explicitDestination = (PdfExplicitDestination) destination;
+            //     explicitDestination
+            //     System.out.println("It is explicit");
+            // }
+            // System.out.println(destination.getPdfObject().getClass().getSimpleName());
+            // PdfArray pdfArray = (PdfArray) destination.getPdfObject();
+            // System.out.println(pdfArray);
+
+            // var first = pdfArray.get(0);
+            // System.out.println(first);
+            // System.out.println(first.getClass().getSimpleName());
+
+            // var dictionary = pdfArray.getAsDictionary(0);
+            // System.out.println(dictionary);
+
+            // int pageNum = document.getPageNumber(dictionary);
+            // System.out.println("Page Number " + pageNum);
+
+
+            // var pageObjNum = pdfArray.getAsNumber(0);
+            // System.out.println(pageObjNum.getValue());
         }
 
         TocItem[] children = outline.getAllChildren()
@@ -44,8 +82,8 @@ class TocItem {
             .toArray(new TocItem[0]);
 
         return new TocItem(
-            outline.getTitle(),
-            1, // TODO: get PageNum
+            label,
+            pageNum,
             children
         );
     }
