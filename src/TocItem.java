@@ -1,15 +1,54 @@
 import java.awt.Component;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 import javax.swing.*;
 import javax.swing.tree.*;
 
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfOutline;
+import com.itextpdf.kernel.pdf.*;
 import com.itextpdf.kernel.pdf.navigation.PdfExplicitDestination;
 
 class TocItem {
     public String label;
     public int pageNum;
     public TocItem[] children;
+
+    public static TocItem fromPdfDocument(PdfDocument document) {
+        var outline = document.getOutlines(true);
+        return TocItem.fromOutline(outline, document);
+    }
+
+    private static TocItem fromOutline(PdfOutline outline, PdfDocument document) {
+        var destination = outline.getDestination();
+
+        // If destination is null, it is the root
+        if (destination != null) {
+            var pdfObject = destination.getPdfObject();
+
+            // TODO: Does this work to get the pageNumber? Also use getContent()
+            if (pdfObject instanceof PdfDictionary) {
+                System.out.println("Is part of dictionary");
+                PdfDictionary dictionary = (PdfDictionary) pdfObject;
+                for (var key: dictionary.keySet()) {
+                    System.out.println(key);
+                }
+            } else {
+                System.out.println("Don't know the type of PdfObject");
+            }
+        }
+
+        TocItem[] children = outline.getAllChildren()
+            .stream()
+            .map((PdfOutline child) -> TocItem.fromOutline(child, document))
+            .collect(Collectors.toList())
+            .toArray(new TocItem[0]);
+
+        return new TocItem(
+            outline.getTitle(),
+            1, // TODO: get PageNum
+            children
+        );
+    }
 
     public TocItem(String label, int pageNum, TocItem[] children) {
         this.label = label;

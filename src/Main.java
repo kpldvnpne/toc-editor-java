@@ -5,6 +5,7 @@ import com.itextpdf.kernel.pdf.PdfWriter;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -61,6 +62,14 @@ public class Main {
       if (result == JFileChooser.APPROVE_OPTION) {
         String filepath = fileChooser.getSelectedFile().getAbsolutePath();
         inputFileText.setText(filepath);
+
+        // TODO: Use the file to extract its TocItem
+        try (var reader = new PdfReader(filepath); var document = new PdfDocument(reader)) {
+          var tocItem = TocItem.fromPdfDocument(document);
+          tocItem.print();
+        } catch (IOException exception) {
+          System.out.println("Can't read the file");
+        }
       }
     });
 
