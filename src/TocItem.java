@@ -1,6 +1,7 @@
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.MutableTreeNode;
+import java.awt.Component;
+
+import javax.swing.*;
+import javax.swing.tree.*;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfOutline;
@@ -21,7 +22,7 @@ record TocItem(String label, int pageNum, TocItem[] children) {
     }
 
     private MutableTreeNode toNode() {
-        var top = new DefaultMutableTreeNode(this.label);
+        var top = new DefaultMutableTreeNode(this);
 
         if (this.children != null) {
             for (var child: this.children) {
@@ -35,7 +36,26 @@ record TocItem(String label, int pageNum, TocItem[] children) {
     public JTree toJTree() {
         var top = this.toNode();
         var tree = new JTree(top);
+        tree.setCellRenderer(new LabelAndPageNumRenderer());
         return tree;
+    }
+
+    public class LabelAndPageNumRenderer implements TreeCellRenderer {
+        public LabelAndPageNumRenderer() {}
+
+        @Override
+        public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
+                boolean leaf, int row, boolean hasFocus) {
+            var panel = new JPanel();
+            var node = (DefaultMutableTreeNode) value;
+            var tocItem = (TocItem) node.getUserObject();
+            var label = new JLabel(tocItem.label);
+            var pageNum = new JLabel("" + tocItem.pageNum);
+            panel.add(label);
+            panel.add(pageNum);
+
+            return panel;
+        }
     }
 
     static TocItem outline = new TocItem("", 0, new TocItem[] {
