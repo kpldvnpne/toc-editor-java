@@ -74,9 +74,10 @@ public class Main {
     });
 
     addTocButton.addActionListener((ActionEvent e) -> {
-      if (!inputFileText.getText().isBlank() && !outputFileText.getText().isBlank()) {
-        addTOC(inputFileText.getText(), outputFileText.getText());
-      }
+      printTOC();
+      // if (!inputFileText.getText().isBlank() && !outputFileText.getText().isBlank()) {
+      //   addTOC(inputFileText.getText(), outputFileText.getText());
+      // }
     });
 
     // Display the window
@@ -84,7 +85,11 @@ public class Main {
     frame.setVisible(true);
   }
 
-  public static void addTOC(String inputFilename, String outputFilename) {
+  private static void printTOC() {
+    TocItem.outline.print();
+  }
+
+  private static void addTOC(String inputFilename, String outputFilename) {
     try {
       PdfReader reader = new PdfReader(inputFilename);
       PdfWriter writer = new PdfWriter(outputFilename);

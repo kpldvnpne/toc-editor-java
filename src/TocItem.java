@@ -72,6 +72,19 @@ class TocItem {
         return tree;
     }
 
+    public void print() {
+        this.print("");
+    }
+
+    private void print(String tab) {
+        System.out.println(tab + this.label + " " + this.pageNum);
+        if (this.children != null) {
+            for (var child: this.children) {
+                child.print(tab + "\t");
+            }
+        }
+    }
+
     public class LabelAndPageNumRenderer extends DefaultTreeCellRenderer {
         public LabelAndPageNumRenderer() {}
 
@@ -124,12 +137,12 @@ class TocItem {
             String label = this.labelField.getText();
             int pageNum = Integer.parseInt(this.pageNumField.getText());
 
-            var updatedTocItem = this.tocItem.copyWith(label, pageNum);
+            this.tocItem.label = label;
+            this.tocItem.pageNum = pageNum;
 
-            // TODO: Update the list (TOC) as well. Then, when the "ADD TOC" button is clicked, use it to create the TOC
-            this.node.setUserObject(updatedTocItem);
+            // TODO: Then, when the "ADD TOC" button is clicked, use it to create the TOC
 
-            return updatedTocItem;
+            return this.tocItem;
         }
     }
 
