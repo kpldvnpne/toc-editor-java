@@ -6,8 +6,18 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfOutline;
 import com.itextpdf.kernel.pdf.navigation.PdfExplicitDestination;
 
-record TocItem(String label, int pageNum, TocItem[] children) {
-    public TocItem updateLabel(String newLabel) {
+class TocItem {
+    public String label;
+    public int pageNum;
+    public TocItem[] children;
+
+    public TocItem(String label, int pageNum, TocItem[] children) {
+        this.label = label;
+        this.pageNum = pageNum;
+        this.children = children;
+    }
+
+    public TocItem copyWithLabel(String newLabel) {
         return new TocItem(
             newLabel,
             this.pageNum,
@@ -15,7 +25,7 @@ record TocItem(String label, int pageNum, TocItem[] children) {
         );
     }
 
-    public TocItem updatePageNum(int newPageNum) {
+    public TocItem copyWithPageNum(int newPageNum) {
         return new TocItem(
             this.label,
             newPageNum,
@@ -23,8 +33,8 @@ record TocItem(String label, int pageNum, TocItem[] children) {
         );
     }
 
-    public TocItem update(String newLabel, int newPageNum) {
-        return this.updateLabel(newLabel).updatePageNum(newPageNum);
+    public TocItem copyWith(String newLabel, int newPageNum) {
+        return this.copyWithLabel(newLabel).copyWithPageNum(newPageNum);
     }
 
     public void addChildrenTo(PdfOutline root, PdfDocument document) {
@@ -114,7 +124,7 @@ record TocItem(String label, int pageNum, TocItem[] children) {
             String label = this.labelField.getText();
             int pageNum = Integer.parseInt(this.pageNumField.getText());
 
-            var updatedTocItem = this.tocItem.update(label, pageNum);
+            var updatedTocItem = this.tocItem.copyWith(label, pageNum);
 
             // TODO: Update the list (TOC) as well. Then, when the "ADD TOC" button is clicked, use it to create the TOC
             this.node.setUserObject(updatedTocItem);
