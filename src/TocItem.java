@@ -22,7 +22,7 @@ record TocItem(String label, int pageNum, TocItem[] children) {
     }
 
     private MutableTreeNode toNode() {
-        var top = new DefaultMutableTreeNode(this);
+        var top = new DefaultMutableTreeNode(this.label);
 
         if (this.children != null) {
             for (var child: this.children) {
@@ -36,7 +36,10 @@ record TocItem(String label, int pageNum, TocItem[] children) {
     public JTree toJTree() {
         var top = this.toNode();
         var tree = new JTree(top);
-        tree.setCellRenderer(new LabelAndPageNumRenderer());
+        // var renderer = new LabelAndPageNumRenderer();
+        // tree.setCellRenderer(renderer);
+        // tree.setCellEditor(new DefaultTreeCellEditor(tree, renderer));
+        tree.setEditable(true);
         return tree;
     }
 
