@@ -1,5 +1,4 @@
 import java.awt.Component;
-
 import javax.swing.*;
 import javax.swing.tree.*;
 
@@ -22,7 +21,7 @@ record TocItem(String label, int pageNum, TocItem[] children) {
     }
 
     private MutableTreeNode toNode() {
-        var top = new DefaultMutableTreeNode(this.label);
+        var top = new DefaultMutableTreeNode(this);
 
         if (this.children != null) {
             for (var child: this.children) {
@@ -36,14 +35,14 @@ record TocItem(String label, int pageNum, TocItem[] children) {
     public JTree toJTree() {
         var top = this.toNode();
         var tree = new JTree(top);
-        // var renderer = new LabelAndPageNumRenderer();
-        // tree.setCellRenderer(renderer);
-        // tree.setCellEditor(new DefaultTreeCellEditor(tree, renderer));
+        var renderer = new LabelAndPageNumRenderer();
+        tree.setCellRenderer(renderer);
+        tree.setCellEditor(new LabelAndPageNumEditor(tree, renderer));
         tree.setEditable(true);
         return tree;
     }
 
-    public class LabelAndPageNumRenderer implements TreeCellRenderer {
+    public class LabelAndPageNumRenderer extends DefaultTreeCellRenderer {
         public LabelAndPageNumRenderer() {}
 
         @Override
@@ -56,6 +55,27 @@ record TocItem(String label, int pageNum, TocItem[] children) {
             var pageNum = new JLabel("" + tocItem.pageNum);
             panel.add(label);
             panel.add(pageNum);
+
+            return panel;
+        }
+    }
+
+    public class LabelAndPageNumEditor extends DefaultTreeCellEditor {
+
+        public LabelAndPageNumEditor(JTree tree, DefaultTreeCellRenderer renderer) {
+            super(tree, renderer);
+        }
+
+        @Override
+        public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded,
+                boolean leaf, int row) {
+            var panel = new JPanel();
+            var node = (DefaultMutableTreeNode) value;
+            var tocItem = (TocItem) node.getUserObject();
+            var labelField = new JTextField(tocItem.label);
+            var pageNumField = new JTextField("" + tocItem.pageNum);
+            panel.add(labelField);
+            panel.add(pageNumField);
 
             return panel;
         }
