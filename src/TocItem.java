@@ -41,7 +41,7 @@ record TocItem(String label, int pageNum, TocItem[] children) {
     }
 
     private MutableTreeNode toNode() {
-        var top = new DefaultMutableTreeNode(this.label);
+        var top = new DefaultMutableTreeNode(this);
 
         if (this.children != null) {
             for (var child: this.children) {
@@ -55,17 +55,9 @@ record TocItem(String label, int pageNum, TocItem[] children) {
     public JTree toJTree() {
         var top = this.toNode();
         var tree = new JTree(top);
-        var renderer = new DefaultTreeCellRenderer();
+        var renderer = new LabelAndPageNumRenderer();
         tree.setCellRenderer(renderer);
-        tree.setCellEditor(new DefaultTreeCellEditor(tree, renderer) {
-            @Override
-            public Object getCellEditorValue() {
-                return "Overridden Editor Value";
-            }
-        });
-        // var renderer = new LabelAndPageNumRenderer();
-        // tree.setCellRenderer(renderer);
-        // tree.setCellEditor(new LabelAndPageNumEditor(tree, renderer));
+        tree.setCellEditor(new LabelAndPageNumEditor(tree, renderer));
         tree.setEditable(true);
         return tree;
     }
@@ -92,6 +84,7 @@ record TocItem(String label, int pageNum, TocItem[] children) {
         private TocItem tocItem;
         private JTextField labelField;
         private JTextField pageNumField;
+        private DefaultMutableTreeNode node;
 
         public LabelAndPageNumEditor(JTree tree, DefaultTreeCellRenderer renderer) {
             super(tree, renderer);
@@ -102,8 +95,8 @@ record TocItem(String label, int pageNum, TocItem[] children) {
         public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded,
                 boolean leaf, int row) {
             var panel = new JPanel();
-            var node = (DefaultMutableTreeNode) value;
-            var tocItem = (TocItem) node.getUserObject();
+            this.node = (DefaultMutableTreeNode) value;
+            var tocItem = (TocItem) this.node.getUserObject();
             this.tocItem = tocItem;
             this.labelField = new JTextField(this.tocItem.label); // TODO: Make one editable at a time
 
@@ -122,7 +115,11 @@ record TocItem(String label, int pageNum, TocItem[] children) {
 
             System.out.println("Invoked getCellEditorValue()");
             System.out.println(label + " " + pageNum);
-            return this.tocItem.update(label, pageNum);
+            var updatedTocItem = this.tocItem.update(label, pageNum);
+
+            this.node.setUserObject(updatedTocItem);
+
+            return updatedTocItem;
         }
     }
 
