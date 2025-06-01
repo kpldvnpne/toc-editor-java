@@ -11,6 +11,8 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 public class Main {
 
+  private static TocItem tocItem = null;
+
   private static void createAndShowGUI() {
     // Create and setup the window
     JFrame frame = new JFrame("TOC Creator");
@@ -64,7 +66,7 @@ public class Main {
 
         // TODO: Update existing scrollpane
         try (var reader = new PdfReader(filepath); var document = new PdfDocument(reader)) {
-          var tocItem = TocItem.fromPdfDocument(document);
+          Main.tocItem = TocItem.fromPdfDocument(document);
           var tree = tocItem.toJTree();
           panel.remove(treeView);
           var newTreeView = new JScrollPane(tree);
@@ -85,11 +87,21 @@ public class Main {
     });
 
     addTocButton.addActionListener((ActionEvent e) -> {
-      if (!inputFileText.getText().isBlank() && !outputFileText.getText().isBlank()) {
-        addTOC(inputFileText.getText(), outputFileText.getText());
-      } else {
-        JOptionPane.showMessageDialog(null, "You don't have either input file or output file selected");
+      if (Main.tocItem == null) {
+        showError("No TOC Found");
       }
+
+      if (inputFileText.getText().isBlank()) {
+        showError("You don't have input file selected");
+      }
+
+      if (outputFileText.getText().isBlank()) {
+        showError("You don't have output file selected");
+      }
+
+      addTOC(inputFileText.getText(), outputFileText.getText(), Main.tocItem);
+
+      showInfo("Editing done");
     });
 
     // Display the window
@@ -97,11 +109,15 @@ public class Main {
     frame.setVisible(true);
   }
 
-  // private static void printTOC() {
-  //   TocItem.outline.print();
-  // }
+  private static void showError(String message) {
+    JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
+  }
 
-  private static void addTOC(String inputFilename, String outputFilename) {
+  private static void showInfo(String message) {
+    JOptionPane.showMessageDialog(null, message, "Info", JOptionPane.INFORMATION_MESSAGE);
+  }
+
+  private static void addTOC(String inputFilename, String outputFilename, TocItem tocItem) {
     try {
       PdfReader reader = new PdfReader(inputFilename);
       PdfWriter writer = new PdfWriter(outputFilename);
@@ -115,7 +131,7 @@ public class Main {
           root.getAllChildren().get(0).removeOutline();
         }
 
-        TocItem.outline.addChildrenTo(root, document);
+        tocItem.addChildrenTo(root, document);
 
         // TODO: Remove this
         // Remove the first element, that we didn't remove because it does not work without it
