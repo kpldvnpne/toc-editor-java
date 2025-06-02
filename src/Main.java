@@ -14,18 +14,17 @@ public class Main {
 
   private static TocItem tocItem = null;
   private static JPanel panel = null;
-  private static JScrollPane treeView = null;
+  private static TocEditor editor = null;
 
   private static void showTocFromFile(String filepath) {
-    // TODO: Update existing scrollpane
+    // TODO: Update existing editor
     try (var reader = new PdfReader(filepath); var document = new PdfDocument(reader)) {
-      Main.panel.remove(treeView);
+      Main.panel.remove(editor);
 
       Main.tocItem = TocItem.fromPdfDocument(document);
-      var tree = new TocTree(Main.tocItem);
-      Main.treeView = new JScrollPane(tree);
+      var editor = new TocEditor(Main.tocItem);
 
-      Main.panel.add(treeView, 2); // TODO: Don't use index
+      Main.panel.add(editor, 2); // TODO: Don't use index
     } catch (IOException exception) {
       System.out.println("Can't read the file");
     }
@@ -68,8 +67,8 @@ public class Main {
     panel.add(outputPanel);
 
     // Tree
-    Main.treeView = new JScrollPane(null);
-    panel.add(treeView);
+    Main.editor = new TocEditor(null);
+    panel.add(editor);
 
     // Add TOC button
     JButton addTocButton = new JButton("Update TOC");
