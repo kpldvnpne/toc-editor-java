@@ -13,6 +13,21 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Main {
 
   private static TocItem tocItem = null;
+  private static JPanel panel = null;
+  private static JScrollPane treeView = null;
+
+  private static void showTocFromFile(String filepath) {
+    // TODO: Update existing scrollpane
+    try (var reader = new PdfReader(filepath); var document = new PdfDocument(reader)) {
+      Main.tocItem = TocItem.fromPdfDocument(document);
+      var tree = tocItem.toJTree();
+      Main.panel.remove(treeView);
+      Main.treeView = new JScrollPane(tree);
+      Main.panel.add(treeView, 2);
+    } catch (IOException exception) {
+      System.out.println("Can't read the file");
+    }
+  }
 
   private static void createAndShowGUI() {
     // Create and setup the window
@@ -25,7 +40,7 @@ public class Main {
     fileChooser.setFileFilter(filter);
 
     // Add content to the window
-    JPanel panel = new JPanel();
+    panel = new JPanel();
     panel.setBounds(0, 0, 400, 200);
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     frame.getContentPane().add(panel);
@@ -51,7 +66,7 @@ public class Main {
     panel.add(outputPanel);
 
     // Tree
-    JScrollPane treeView = new JScrollPane(null);
+    Main.treeView = new JScrollPane(null);
     panel.add(treeView);
 
     // Add TOC button
@@ -65,16 +80,7 @@ public class Main {
         String filepath = fileChooser.getSelectedFile().getAbsolutePath();
         inputFileText.setText(filepath);
 
-        // TODO: Update existing scrollpane
-        try (var reader = new PdfReader(filepath); var document = new PdfDocument(reader)) {
-          Main.tocItem = TocItem.fromPdfDocument(document);
-          var tree = tocItem.toJTree();
-          panel.remove(treeView);
-          var newTreeView = new JScrollPane(tree);
-          panel.add(newTreeView, 2);
-        } catch (IOException exception) {
-          System.out.println("Can't read the file");
-        }
+        showTocFromFile(filepath);
       }
     });
 
