@@ -1,12 +1,20 @@
 import javax.swing.*;
 
 public class TocEditor extends JPanel {
+  public static JComponent getNoEditor() {
+    var noEditorPanel = new JPanel();
+    noEditorPanel.add(new JLabel("Please select a file"));
+
+    return noEditorPanel;
+  }
+
   TocItem tocItem;
 
   public TocEditor(TocItem tocItem) {
     super();
     this.tocItem = tocItem;
 
+    // TODO: Handle when toc is null
     this.setup();
   }
 

@@ -14,7 +14,7 @@ public class Main {
 
   private static TocItem tocItem = null;
   private static JPanel panel = null;
-  private static TocEditor editor = null;
+  private static JComponent editor = null;
 
   private static void showTocFromFile(String filepath) {
     // TODO: Update existing editor
@@ -57,7 +57,7 @@ public class Main {
     panel.add(inputPanel);
 
     // Tree
-    Main.editor = new TocEditor(null);
+    Main.editor = TocEditor.getNoEditor();
     panel.add(editor);
 
     // Add TOC button
@@ -110,7 +110,7 @@ public class Main {
     frame.setVisible(true);
 
     // TODO: Delete once done with Rendering
-    Main.showTocFromFile("/Users/kapildev/Downloads/toc_example_2.pdf");
+    // Main.showTocFromFile("/Users/kapildev/Downloads/toc_example_2.pdf");
   }
 
   private static void showError(String message) {
