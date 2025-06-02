@@ -70,7 +70,7 @@ public class Main {
     panel.add(treeView);
 
     // Add TOC button
-    JButton addTocButton = new JButton("Add TOC");
+    JButton addTocButton = new JButton("Update TOC");
     panel.add(addTocButton);
 
     inputButton.addActionListener((ActionEvent e) -> {
@@ -106,14 +106,20 @@ public class Main {
         showError("You don't have output file selected");
       }
 
-      addTOC(inputFileText.getText(), outputFileText.getText(), Main.tocItem);
+      if (addTOC(inputFileText.getText(), outputFileText.getText(), Main.tocItem)) {
+        showInfo("Successful");
+      } else {
+        showError("Could not edit TOC");
+      }
 
-      showInfo("Editing done");
     });
 
     // Display the window
     frame.setSize(new Dimension(800, 400));
     frame.setVisible(true);
+
+    // TODO: Delete once done with Rendering
+    Main.showTocFromFile("/Users/kapildev/Downloads/toc_example_2.pdf");
   }
 
   private static void showError(String message) {
@@ -124,7 +130,12 @@ public class Main {
     JOptionPane.showMessageDialog(null, message, "Info", JOptionPane.INFORMATION_MESSAGE);
   }
 
-  private static void addTOC(String inputFilename, String outputFilename, TocItem tocItem) {
+  private static boolean addTOC(String inputFilename, String outputFilename, TocItem tocItem) {
+    if (inputFilename.equals(outputFilename)) {
+      showError("Input and output should not be same file. Exiting");
+      return true;
+    }
+
     try {
       PdfReader reader = new PdfReader(inputFilename);
       PdfWriter writer = new PdfWriter(outputFilename);
@@ -144,9 +155,13 @@ public class Main {
         // Remove the first element, that we didn't remove because it does not work without it
         root.getAllChildren().get(0).removeOutline();
       }
+
+      return true;
     } catch (Exception exception) {
       System.out.println("Could not open the file");
       exception.printStackTrace();
+
+      return false;
     }
   }
 

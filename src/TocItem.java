@@ -98,6 +98,7 @@ class TocItem {
     }
 
     private MutableTreeNode toNode() {
+        // var top = new DefaultMutableTreeNode(this.label);
         var top = new DefaultMutableTreeNode(this);
 
         if (this.children != null) {
@@ -112,6 +113,8 @@ class TocItem {
     public JTree toJTree() {
         var top = this.toNode();
         var tree = new JTree(top);
+        // tree.setCellRenderer(new DefaultTreeCellRenderer());
+        tree.setRowHeight(30);
         var renderer = new LabelAndPageNumRenderer();
         tree.setCellRenderer(renderer);
         tree.setCellEditor(new LabelAndPageNumEditor(tree, renderer));
@@ -133,8 +136,6 @@ class TocItem {
     }
 
     public class LabelAndPageNumRenderer extends DefaultTreeCellRenderer {
-        public LabelAndPageNumRenderer() {}
-
         @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
                 boolean leaf, int row, boolean hasFocus) {
@@ -144,8 +145,8 @@ class TocItem {
             var label = new JLabel(tocItem.label);
             var pageNum = new JLabel("" + tocItem.pageNum);
             panel.add(label);
+            panel.add(Box.createHorizontalStrut(50));
             panel.add(pageNum);
-
             return panel;
         }
     }
@@ -174,6 +175,7 @@ class TocItem {
             this.pageNumField = new JTextField("" + this.tocItem.pageNum);
 
             panel.add(labelField);
+            panel.add(Box.createHorizontalStrut(50));
             panel.add(pageNumField);
 
             return panel;
