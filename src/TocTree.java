@@ -54,9 +54,17 @@ public class TocTree extends JTree {
         thisTree.setModel(new DefaultTreeModel(rootNode));
     }
 
-    public void update() {
+    private void update() {
         // Update
         this.populate();
+    }
+
+    public void addChildToSelectedItem() {
+        this.selectedItem.addChild();
+
+        this.update();
+
+        // TODO: Expand on doing this
     }
 
     public void removeSelectedItem() {

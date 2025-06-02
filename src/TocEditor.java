@@ -45,6 +45,11 @@ public class TocEditor extends JPanel {
     this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
     // Add actions to buttons
+    addChildButton.addActionListener((e) -> {
+      tree.addChildToSelectedItem();
+    });
+
+
     removeButton.addActionListener((e) -> {
       tree.removeSelectedItem();
     });

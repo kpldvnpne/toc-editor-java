@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -91,6 +92,13 @@ class TocItem {
 
     public TocItem copyWith(String newLabel, int newPageNum) {
         return this.copyWithLabel(newLabel).copyWithPageNum(newPageNum);
+    }
+
+    public void addChild() {
+        if (this.children == null) {
+            this.children = new ArrayList<TocItem>();
+        }
+        this.children.add(new TocItem("New Label", this.pageNum, this, null));
     }
 
     public void removeFromParent() {
