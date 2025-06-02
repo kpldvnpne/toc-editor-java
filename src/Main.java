@@ -1,5 +1,3 @@
-// TODO: 1. Add child button, add cross button
-
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -110,7 +108,7 @@ public class Main {
     frame.setVisible(true);
 
     // TODO: Delete once done with Rendering
-    // Main.showTocFromFile("/Users/kapildev/Downloads/toc_example_2.pdf");
+    Main.showTocFromFile("/Users/kapildev/Downloads/toc_example_2.pdf");
   }
 
   private static void showError(String message) {

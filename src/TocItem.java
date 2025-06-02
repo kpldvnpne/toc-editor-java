@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.swing.tree.*;
@@ -11,7 +10,7 @@ class TocItem {
     public String label;
     public int pageNum;
     public TocItem parent;
-    public TocItem[] children;
+    public List<TocItem> children;
 
     public static TocItem fromPdfDocument(PdfDocument document) {
         var outline = document.getOutlines(true);
@@ -60,13 +59,12 @@ class TocItem {
         current.children = outline.getAllChildren()
             .stream()
             .map((PdfOutline child) -> TocItem.fromOutline(child, document, current))
-            .collect(Collectors.toList())
-            .toArray(new TocItem[0]);
+            .collect(Collectors.toList());
 
         return current;
     }
 
-    public TocItem(String label, int pageNum, TocItem parent, TocItem[] children) {
+    public TocItem(String label, int pageNum, TocItem parent, List<TocItem> children) {
         this.label = label;
         this.pageNum = pageNum;
         this.parent = parent;
@@ -100,10 +98,7 @@ class TocItem {
     }
 
     private void removeChild(TocItem child) {
-        var newChildren = new ArrayList<TocItem>(Arrays.asList(this.children));
-        newChildren.remove(child);
-
-        this.children = newChildren.toArray(new TocItem[] {});
+        this.children.remove(child);
     }
 
     public void addChildrenTo(PdfOutline root, PdfDocument document) {
