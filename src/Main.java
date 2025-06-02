@@ -24,7 +24,7 @@ public class Main {
       Main.tocItem = TocItem.fromPdfDocument(document);
       Main.editor = new TocEditor(Main.tocItem);
 
-      Main.panel.add(editor, 2); // TODO: Don't use index
+      Main.panel.add(editor, 1); // TODO: Don't use index
     } catch (IOException exception) {
       System.out.println("Can't read the file");
     }
@@ -56,24 +56,13 @@ public class Main {
 
     panel.add(inputPanel);
 
-    // TODO: Remove this and use Add TOC button as the save button
-    // Output Panel
-    JPanel outputPanel = new JPanel();
-    outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.X_AXIS));
-    JButton outputButton = new JButton("Select Output Destination:");
-    outputPanel.add(outputButton);
-    JLabel outputFileText = new JLabel();
-    outputPanel.add(outputFileText);
-
-    panel.add(outputPanel);
-
     // Tree
     Main.editor = new TocEditor(null);
     panel.add(editor);
 
     // Add TOC button
-    JButton addTocButton = new JButton("Update TOC");
-    panel.add(addTocButton);
+    JButton saveAsButton = new JButton("Save As");
+    panel.add(saveAsButton);
 
     inputButton.addActionListener((ActionEvent e) -> {
       var result = fileChooser.showOpenDialog(frame);
@@ -86,34 +75,34 @@ public class Main {
       }
     });
 
-    outputButton.addActionListener((ActionEvent e) -> {
-      var result = fileChooser.showSaveDialog(frame);
-
-      if (result == JFileChooser.APPROVE_OPTION) {
-        String filepath = fileChooser.getSelectedFile().getAbsolutePath();
-        outputFileText.setText(filepath);
-      }
-    });
-
-    addTocButton.addActionListener((ActionEvent e) -> {
+    saveAsButton.addActionListener((ActionEvent e) -> {
       if (Main.tocItem == null) {
         showError("No TOC Found");
+        return;
       }
 
       if (inputFileText.getText().isBlank()) {
         showError("You don't have input file selected");
+        return;
       }
 
-      if (outputFileText.getText().isBlank()) {
-        showError("You don't have output file selected");
-      }
+      var result = fileChooser.showSaveDialog(frame);
 
-      if (addTOC(inputFileText.getText(), outputFileText.getText(), Main.tocItem)) {
-        showInfo("Successful");
-      } else {
-        showError("Could not edit TOC");
-      }
+      if (result == JFileChooser.APPROVE_OPTION) {
+        String outputFilePath = fileChooser.getSelectedFile().getAbsolutePath();
+        String inputFilePath = inputFileText.getText();
 
+        if (outputFilePath.equals(inputFilePath)) {
+          showError("You can't save to the same file. Please select different file");
+          return;
+        }
+
+        if (addTOC(inputFilePath, outputFilePath, Main.tocItem)) {
+          showInfo("Successful");
+        } else {
+          showError("Could not edit TOC");
+        }
+      }
     });
 
     // Display the window
