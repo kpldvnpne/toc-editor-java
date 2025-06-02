@@ -1,9 +1,6 @@
-import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import javax.swing.*;
 import javax.swing.tree.*;
 
 import com.itextpdf.kernel.pdf.*;
@@ -118,27 +115,16 @@ class TocItem {
         }
     }
 
-    private MutableTreeNode toNode() {
+    public MutableTreeNode toTreeNode() {
         var top = new DefaultMutableTreeNode(this);
 
         if (this.children != null) {
             for (var child: this.children) {
-                var childNode = child.toNode();
+                var childNode = child.toTreeNode();
                 top.add(childNode);
             }
         }
         return top;
-    }
-
-    public JTree toJTree() {
-        var top = this.toNode();
-        var tree = new JTree(top);
-        tree.setRowHeight(30);
-        var renderer = new LabelAndPageNumRenderer();
-        tree.setCellRenderer(renderer);
-        tree.setCellEditor(new LabelAndPageNumEditor(tree, renderer));
-        tree.setEditable(true);
-        return tree;
     }
 
     public void print() {
@@ -151,74 +137,6 @@ class TocItem {
             for (var child: this.children) {
                 child.print(tab + "\t");
             }
-        }
-    }
-
-    public class LabelAndPageNumRenderer extends DefaultTreeCellRenderer {
-        @Override
-        public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
-                boolean leaf, int row, boolean hasFocus) {
-            var panel = new JPanel();
-            var node = (DefaultMutableTreeNode) value;
-            var tocItem = (TocItem) node.getUserObject();
-            var label = new JLabel(tocItem.label);
-            var pageNum = new JLabel("" + tocItem.pageNum);
-            var removeButton = new JButton("Remove");
-
-            panel.add(label);
-            panel.add(Box.createHorizontalStrut(50));
-            panel.add(pageNum);
-            panel.add(Box.createHorizontalGlue());
-            panel.add(removeButton);
-
-            removeButton.addActionListener((ActionEvent e) -> {
-                tocItem.removeFromParent();
-                // TODO: Regenerate based on tocItem
-            });
-
-            return panel;
-        }
-    }
-
-    public class LabelAndPageNumEditor extends DefaultTreeCellEditor {
-        private TocItem tocItem;
-        private JTextField labelField;
-        private JTextField pageNumField;
-        private DefaultMutableTreeNode node;
-
-        public LabelAndPageNumEditor(JTree tree, DefaultTreeCellRenderer renderer) {
-            super(tree, renderer);
-            this.tocItem = null;
-        }
-
-        // TODO: Make it fully visible when editing
-        @Override
-        public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded,
-                boolean leaf, int row) {
-            var panel = new JPanel();
-            this.node = (DefaultMutableTreeNode) value;
-            var tocItem = (TocItem) this.node.getUserObject();
-            this.tocItem = tocItem;
-            this.labelField = new JTextField(this.tocItem.label); // TODO: Make one editable at a time
-
-            this.pageNumField = new JTextField("" + this.tocItem.pageNum);
-
-            panel.add(labelField);
-            panel.add(Box.createHorizontalStrut(50));
-            panel.add(pageNumField);
-
-            return panel;
-        }
-
-        @Override
-        public Object getCellEditorValue() {
-            String label = this.labelField.getText();
-            int pageNum = Integer.parseInt(this.pageNumField.getText());
-
-            this.tocItem.label = label;
-            this.tocItem.pageNum = pageNum;
-
-            return this.tocItem;
         }
     }
 }

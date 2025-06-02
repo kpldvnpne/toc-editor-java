@@ -19,11 +19,13 @@ public class Main {
   private static void showTocFromFile(String filepath) {
     // TODO: Update existing scrollpane
     try (var reader = new PdfReader(filepath); var document = new PdfDocument(reader)) {
-      Main.tocItem = TocItem.fromPdfDocument(document);
-      var tree = tocItem.toJTree();
       Main.panel.remove(treeView);
+
+      Main.tocItem = TocItem.fromPdfDocument(document);
+      var tree = new TocTree(Main.tocItem);
       Main.treeView = new JScrollPane(tree);
-      Main.panel.add(treeView, 2);
+
+      Main.panel.add(treeView, 2); // TODO: Don't use index
     } catch (IOException exception) {
       System.out.println("Can't read the file");
     }
@@ -145,6 +147,7 @@ public class Main {
 
         // Remove every child
         // TODO: Removing every outline does not work
+        // TODO: Check if this works with PDFs without an existing outline
         while (root.getAllChildren().size() > 1) {
           root.getAllChildren().get(0).removeOutline();
         }
