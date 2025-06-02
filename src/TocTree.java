@@ -1,14 +1,19 @@
 import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellEditor;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
+import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
+
+// TODO: Use a top add child (+) and remove (x) button
 
 public class TocTree extends JTree {
     TocItem root;
+    private TocItem selectedItem;
 
     public TocTree(TocItem root) {
         this.root = root;
@@ -26,6 +31,15 @@ public class TocTree extends JTree {
         thisTree.setCellRenderer(renderer);
         thisTree.setCellEditor(new LabelAndPageNumEditor(thisTree, renderer));
         thisTree.setEditable(true);
+
+        // Set action listener
+        thisTree.addTreeSelectionListener((TreeSelectionEvent e) -> {
+            TreePath newSelectionPath = e.getNewLeadSelectionPath();
+            var node = (DefaultMutableTreeNode) newSelectionPath.getLastPathComponent();
+            var tocItem = (TocItem) node.getUserObject();
+
+            this.selectedItem = tocItem;
+        });
     }
 
     private void populate() {
@@ -55,18 +69,10 @@ public class TocTree extends JTree {
             var tocItem = (TocItem) node.getUserObject();
             var label = new JLabel(tocItem.label);
             var pageNum = new JLabel("" + tocItem.pageNum);
-            var removeButton = new JButton("Remove");
 
             panel.add(label);
             panel.add(Box.createHorizontalStrut(50));
             panel.add(pageNum);
-            panel.add(Box.createHorizontalGlue());
-            panel.add(removeButton);
-
-            removeButton.addActionListener((ActionEvent e) -> {
-                tocItem.removeFromParent();
-                // TODO: Regenerate based on tocItem
-            });
 
             return panel;
         }
