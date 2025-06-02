@@ -98,7 +98,7 @@ class TocItem {
     }
 
     public void removeFromParent() {
-        this.parent.removeChild(this);
+        if (this.parent != null) this.parent.removeChild(this);
     }
 
     public void removeChild(TocItem child) {
