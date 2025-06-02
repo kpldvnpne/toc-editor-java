@@ -50,6 +50,7 @@ public class TocTree extends JTree {
         public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
                 boolean leaf, int row, boolean hasFocus) {
             var panel = new JPanel();
+            panel.setBackground(Color.WHITE);
             var node = (DefaultMutableTreeNode) value;
             var tocItem = (TocItem) node.getUserObject();
             var label = new JLabel(tocItem.label);
@@ -87,6 +88,7 @@ public class TocTree extends JTree {
         public Component getTreeCellEditorComponent(JTree tree, Object value, boolean isSelected, boolean expanded,
                 boolean leaf, int row) {
             var panel = new JPanel();
+            panel.setBackground(Color.WHITE);
             this.node = (DefaultMutableTreeNode) value;
             var tocItem = (TocItem) this.node.getUserObject();
             this.tocItem = tocItem;
