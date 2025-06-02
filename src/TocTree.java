@@ -35,10 +35,15 @@ public class TocTree extends JTree {
         // Set action listener
         thisTree.addTreeSelectionListener((TreeSelectionEvent e) -> {
             TreePath newSelectionPath = e.getNewLeadSelectionPath();
-            var node = (DefaultMutableTreeNode) newSelectionPath.getLastPathComponent();
-            var tocItem = (TocItem) node.getUserObject();
 
-            this.selectedItem = tocItem;
+            if (newSelectionPath == null) {
+                this.selectedItem = null;
+            } else {
+                var node = (DefaultMutableTreeNode) newSelectionPath.getLastPathComponent();
+                var tocItem = (TocItem) node.getUserObject();
+
+                this.selectedItem = tocItem;
+            }
         });
     }
 
@@ -50,13 +55,15 @@ public class TocTree extends JTree {
     }
 
     public void update() {
-        var thisTree = (JTree) this;
-
-        // Remove nodes
-        thisTree.removeAll();
-
         // Update
         this.populate();
+    }
+
+    public void removeSelectedItem() {
+        this.selectedItem.removeFromParent();
+        this.selectedItem = null;
+
+        this.update();
     }
 
     public class LabelAndPageNumRenderer extends DefaultTreeCellRenderer {

@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -99,7 +100,10 @@ class TocItem {
     }
 
     private void removeChild(TocItem child) {
-        Arrays.asList(this.children).remove(child);
+        var newChildren = new ArrayList<TocItem>(Arrays.asList(this.children));
+        newChildren.remove(child);
+
+        this.children = newChildren.toArray(new TocItem[] {});
     }
 
     public void addChildrenTo(PdfOutline root, PdfDocument document) {

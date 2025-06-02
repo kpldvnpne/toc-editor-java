@@ -19,6 +19,7 @@ public class TocEditor extends JPanel {
     var buttonPanel = new JPanel();
     var addChildButton = new JButton("Add Child");
     var removeButton = new JButton("Remove");
+
     buttonPanel.add(addChildButton);
     buttonPanel.add(removeButton);
 
@@ -34,5 +35,10 @@ public class TocEditor extends JPanel {
 
     // Make the main panel column
     this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
+    // Add actions to buttons
+    removeButton.addActionListener((e) -> {
+      tree.removeSelectedItem();
+    });
   }
 }
