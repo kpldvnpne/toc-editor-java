@@ -22,7 +22,7 @@ public class Main {
       Main.panel.remove(editor);
 
       Main.tocItem = TocItem.fromPdfDocument(document);
-      var editor = new TocEditor(Main.tocItem);
+      Main.editor = new TocEditor(Main.tocItem);
 
       Main.panel.add(editor, 2); // TODO: Don't use index
     } catch (IOException exception) {
@@ -56,6 +56,7 @@ public class Main {
 
     panel.add(inputPanel);
 
+    // TODO: Remove this and use Add TOC button as the save button
     // Output Panel
     JPanel outputPanel = new JPanel();
     outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.X_AXIS));
