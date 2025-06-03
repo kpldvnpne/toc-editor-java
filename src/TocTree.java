@@ -8,9 +8,12 @@ import javax.swing.tree.TreeSelectionModel;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import java.util.EventListener;
 
-// TODO: Make the toc items draggable
 public class TocTree extends JTree {
     TocItem root;
     private TocItem selectedItem;
@@ -49,6 +52,11 @@ public class TocTree extends JTree {
 
         // Allow single selection only
         this.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+
+        // Allow drag
+        this.setDragEnabled(true);
+        this.setDropMode(DropMode.ON_OR_INSERT);
+        this.setTransferHandler(new TocTreeTransferHandler());
     }
 
     private void populate() {
@@ -112,7 +120,7 @@ public class TocTree extends JTree {
         void valueChanged(TocItem tocItem);
     }
 
-    public class LabelAndPageNumRenderer extends DefaultTreeCellRenderer {
+    private class LabelAndPageNumRenderer extends DefaultTreeCellRenderer {
         @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
                 boolean leaf, int row, boolean hasFocus) {
@@ -137,6 +145,99 @@ public class TocTree extends JTree {
 
 
             return panel;
+        }
+    }
+
+    private class TocTreeTransferHandler extends TransferHandler {
+        DataFlavor nodeFlavor;
+
+        public TocTreeTransferHandler() {
+            var mimeType = DataFlavor.javaJVMLocalObjectMimeType + ";class=\"" + DefaultMutableTreeNode.class.getName() + "\"";
+
+            try {
+                this.nodeFlavor = new DataFlavor(mimeType);
+            } catch (ClassNotFoundException e) {
+                System.out.println("Invalid mime type");
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public boolean canImport(TransferSupport support) {
+            return true;
+        }
+
+        @Override
+        protected Transferable createTransferable(JComponent c) {
+            var tree = (JTree) c;
+            var path = tree.getSelectionPath();
+            var selectedNode = (DefaultMutableTreeNode) path.getLastPathComponent();
+            return new NodeTransferable(selectedNode);
+        }
+
+        @Override
+        public int getSourceActions(JComponent c) {
+            return MOVE;
+        }
+
+        @Override
+        public boolean importData(TransferSupport support) {
+            var tree = (TocTree) support.getComponent();
+
+            DefaultMutableTreeNode nodeToTransfer = null;
+            try {
+                var transferData = support.getTransferable().getTransferData(this.nodeFlavor);
+                nodeToTransfer = (DefaultMutableTreeNode) transferData;
+            } catch (UnsupportedFlavorException | IOException e) {
+                System.out.println("Something wrong while getting transferrable node");
+                return false;
+            }
+
+            var dropLocation = (JTree.DropLocation) support.getDropLocation();
+            var childIndex = dropLocation.getChildIndex();
+            var destinationPath = dropLocation.getPath();
+            var destinationNode = (DefaultMutableTreeNode) destinationPath.getLastPathComponent();
+            var destinationTocItem = (TocItem) destinationNode.getUserObject();
+
+            var insertIndex = childIndex; // DropMode.INSERT
+            if (childIndex == 1) { // DropMode.ON
+                insertIndex = destinationTocItem.children.size();
+            }
+
+            var itemToTransfer = (TocItem) nodeToTransfer.getUserObject();
+            itemToTransfer.removeFromParent(); // Needed, because could be re-added to the same parent
+            destinationTocItem.addChild(itemToTransfer, insertIndex);
+
+            // Update tree succinctly
+            // destinationNode.insert(nodeToTransfer, insertIndex);
+
+            // Update tree now
+            tree.update(); // TODO: Causing issues, so might have to make use of DataModel instead
+
+            return true;
+        }
+
+        private class NodeTransferable implements Transferable {
+            DefaultMutableTreeNode node;
+
+            public NodeTransferable(DefaultMutableTreeNode node) {
+                this.node = node;
+            }
+
+            @Override
+            public DataFlavor[] getTransferDataFlavors() {
+                return new DataFlavor[] {};
+            }
+
+            @Override
+            public boolean isDataFlavorSupported(DataFlavor flavor) {
+                return true;
+            }
+
+            @Override
+            public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+                return node;
+            }
         }
     }
 }
