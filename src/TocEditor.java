@@ -22,7 +22,7 @@ public class TocEditor extends JPanel {
     var topRowPanel = new JPanel();
     topRowPanel.setLayout(new BoxLayout(topRowPanel, BoxLayout.LINE_AXIS));
 
-    var label = new JLabel("TOC Editor");
+    var label = new JLabel("Table of content");
 
     var buttonPanel = new JPanel();
     var editButton = new JButton("Edit");
