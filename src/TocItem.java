@@ -95,10 +95,20 @@ class TocItem {
     }
 
     public void addChild(TocItem child) {
+        this.addChild(child, -1);
+    }
+
+    public void addChild(TocItem child, int index) {
         if (this.children == null) {
             this.children = new ArrayList<TocItem>();
         }
-        this.children.add(child);
+
+        if (index == -1) {
+            index = this.children.size();
+        }
+
+        this.children.add(index, child);
+        child.parent = this;
     }
 
     public void removeFromParent() {
