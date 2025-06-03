@@ -54,7 +54,7 @@ public class Main {
     JPanel inputContainer = new JPanel();
     inputContainer.setLayout(new GridLayout(0, 1)); // Grid helps it fill the width
 
-    JPanel inputContainerInner = new JPanel(new FlowLayout(FlowLayout.LEADING)); // Flow Layout helps keep everything flexible
+    JPanel inputContainerInner = new JPanel(new FlowLayout(FlowLayout.LEADING, 0, 0)); // Flow Layout helps keep everything flexible
     inputContainer.add(inputContainerInner);
 
     JButton inputButton = new JButton("Select Input Destination:");
