@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Arrays;
 
 import javax.swing.*;
@@ -14,20 +15,31 @@ public class TocEditor extends JPanel {
     return noEditorPanel;
   }
 
+  public static TocEditor fromInputFile(String inputFilePath) {
+    try (var reader = new PdfReader(inputFilePath); var document = new PdfDocument(reader)) {
+      // TODO: Handle a PDF without TOC
+      var tocItem = TocItem.fromPdfDocument(document);
+
+      return new TocEditor(tocItem, inputFilePath);
+    } catch (IOException exception) {
+      System.out.println("Can't read the file");
+      return null;
+    }
+  }
+
   private TocItem tocItem;
-  private JLabel inputFileText;
+  private String inputFilePath;
   private JButton saveAsButton;
 
-  public TocEditor(TocItem tocItem, JLabel inputFileText) {
+  private TocEditor(TocItem tocItem, String inputFilePath) {
     super();
 
+    // The root should be named Root for easier understanding
     tocItem.label = "Root";
 
     this.tocItem = tocItem;
+    this.inputFilePath = inputFilePath;
 
-    this.inputFileText = inputFileText;
-
-    // TODO: Handle when toc is null
     this.setup();
   }
 
@@ -111,7 +123,7 @@ public class TocEditor extends JPanel {
 
       var fileChooser = Main.fileChooser;
 
-      if (inputFileText.getText().isBlank()) {
+      if (inputFilePath.isBlank()) {
         Dialog.showError("You don't have input file selected");
         return;
       }
@@ -120,7 +132,6 @@ public class TocEditor extends JPanel {
 
       if (result == JFileChooser.APPROVE_OPTION) {
         String outputFilePath = fileChooser.getSelectedFile().getAbsolutePath();
-        String inputFilePath = inputFileText.getText();
 
         if (outputFilePath.equals(inputFilePath)) {
           Dialog.showError("You can't save to the same file. Please select different file");

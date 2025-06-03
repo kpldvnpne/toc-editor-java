@@ -1,10 +1,7 @@
-import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfReader;
-
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.io.IOException;
+import java.io.File;
 import java.util.Arrays;
 
 import javax.swing.*;
@@ -13,19 +10,17 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Main {
   public static JFileChooser fileChooser;
 
-  private static TocItem tocItem = null;
   private static JPanel panel = null;
   private static JComponent editor = null;
 
   private static void showTocFromFile(JLabel inputFileText) {
     var filepath = inputFileText.getText();
-    try (var reader = new PdfReader(filepath); var document = new PdfDocument(reader)) {
-      var tocItem = TocItem.fromPdfDocument(document);
-      var editor = new TocEditor(tocItem, inputFileText);
+    var editor = TocEditor.fromInputFile(filepath);
 
+    if (editor == null) {
+      Dialog.showError("Could not get table of contents from the file");
+    } else {
       updateEditor(editor);
-    } catch (IOException exception) {
-      System.out.println("Can't read the file");
     }
   }
 
@@ -97,7 +92,10 @@ public class Main {
 
 
     // TODO: Delete once done with Rendering
-    // Main.showTocFromFile("/Users/kapildev/Downloads/toc_example_2.pdf");
+    var filepath = "/Users/kapildev/Downloads/toc_example.pdf";
+    inputFileText.setText(filepath);
+    fileChooser.setSelectedFile(new File(filepath));
+    Main.showTocFromFile(inputFileText);
   }
 
   public static void main(String[] args) {
