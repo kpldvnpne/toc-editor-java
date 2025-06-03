@@ -54,8 +54,17 @@ public class TocTree extends JTree {
     }
 
     private void update() {
-        // Update
         this.populate();
+    }
+
+    public void editSelectedItem() {
+        if (this.selectedItem == null) {
+            return;
+        }
+
+        EditTocItem.showFor(this.selectedItem);
+
+        this.update();
     }
 
     public void addChildToSelectedItem() {

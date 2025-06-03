@@ -25,9 +25,11 @@ public class TocEditor extends JPanel {
     var label = new JLabel("TOC Editor");
 
     var buttonPanel = new JPanel();
+    var editButton = new JButton("Edit");
     var addChildButton = new JButton("Add Child");
     var removeButton = new JButton("Remove");
 
+    buttonPanel.add(editButton);
     buttonPanel.add(addChildButton);
     buttonPanel.add(removeButton);
 
@@ -45,6 +47,10 @@ public class TocEditor extends JPanel {
     this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
     // Add actions to buttons
+    editButton.addActionListener((e) -> {
+      tree.editSelectedItem();
+    });
+
     addChildButton.addActionListener((e) -> {
       tree.addChildToSelectedItem();
     });
