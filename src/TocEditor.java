@@ -35,9 +35,9 @@ public class TocEditor extends JPanel {
     var addChildButton = new JButton("Add Child");
     var removeButton = new JButton("Remove");
 
-    buttonPanel.add(editButton);
-    buttonPanel.add(addChildButton);
-    buttonPanel.add(removeButton);
+    var buttons = Arrays.asList(new JButton[] { editButton, addChildButton, removeButton });
+
+    buttons.stream().forEach(buttonPanel::add);
 
     topRowPanel.add(label);
     topRowPanel.add(Box.createHorizontalGlue());
