@@ -20,12 +20,9 @@ public class Main {
   private static void showTocFromFile(JLabel inputFileText) {
     var filepath = inputFileText.getText();
     try (var reader = new PdfReader(filepath); var document = new PdfDocument(reader)) {
-      var indexOfEditor = Arrays.asList(Main.panel.getComponents()).indexOf(editor);
-      Main.panel.remove(editor);
+      var tocItem = TocItem.fromPdfDocument(document);
+      var editor = new TocEditor(tocItem, inputFileText);
 
-      Main.tocItem = TocItem.fromPdfDocument(document);
-
-      var editor = new TocEditor(Main.tocItem, inputFileText);
       updateEditor(editor);
     } catch (IOException exception) {
       System.out.println("Can't read the file");
