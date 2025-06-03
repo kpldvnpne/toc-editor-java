@@ -94,11 +94,11 @@ class TocItem {
         return this.copyWithLabel(newLabel).copyWithPageNum(newPageNum);
     }
 
-    public void addChild() {
+    public void addChild(TocItem child) {
         if (this.children == null) {
             this.children = new ArrayList<TocItem>();
         }
-        this.children.add(new TocItem("New Label", this.pageNum, this, null));
+        this.children.add(child);
     }
 
     public void removeFromParent() {
