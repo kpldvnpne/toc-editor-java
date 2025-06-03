@@ -57,7 +57,7 @@ public class Main {
     JPanel inputContainerInner = new JPanel(new FlowLayout(FlowLayout.LEADING, 0, 0)); // Flow Layout helps keep everything flexible
     inputContainer.add(inputContainerInner);
 
-    JButton inputButton = new JButton("Select Input Destination:");
+    JButton inputButton = new JButton("Select input file:");
     inputContainerInner.add(inputButton);
     JLabel inputFileText = new JLabel();
     inputContainerInner.add(inputFileText);
