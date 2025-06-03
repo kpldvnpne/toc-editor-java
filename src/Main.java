@@ -2,11 +2,11 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 public class Main {
 
@@ -43,6 +43,10 @@ public class Main {
     panel.setBounds(0, 0, 400, 200);
     panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
     frame.getContentPane().add(panel);
+
+    // Padding
+    Border padding = BorderFactory.createEmptyBorder(20, 20, 20, 20);
+    panel.setBorder(padding);
 
     // Input Panel
     JPanel inputPanel = new JPanel();
