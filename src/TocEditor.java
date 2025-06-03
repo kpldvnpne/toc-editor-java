@@ -53,7 +53,9 @@ public class TocEditor extends JPanel {
     topRowPanel.add(Box.createHorizontalGlue());
     topRowPanel.add(buttonPanel);
 
+    // Table of Contents Scroll View
     var tree = this.tocItem == null ? null : new TocTree(this.tocItem);
+    tree.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     var treeView = new JScrollPane(tree);
 
     this.add(topRowPanel);
