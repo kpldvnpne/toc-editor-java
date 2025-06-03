@@ -20,7 +20,11 @@ public class TocEditor extends JPanel {
 
   public TocEditor(TocItem tocItem, JLabel inputFileText) {
     super();
+
+    tocItem.label = "Root";
+
     this.tocItem = tocItem;
+
     this.inputFileText = inputFileText;
 
     // TODO: Handle when toc is null

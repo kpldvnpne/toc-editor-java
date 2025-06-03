@@ -45,9 +45,6 @@ public class TocTree extends JTree {
 
             this.selectionListener.valueChanged(this.selectedItem);
         });
-
-        // Hide root node
-        this.setRootVisible(false);
     }
 
     private void populate() {
@@ -115,6 +112,7 @@ public class TocTree extends JTree {
         @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
                 boolean leaf, int row, boolean hasFocus) {
+            // TODO: Make all of equal width
             var panel = new JPanel();
 
             var color = selected ? Color.LIGHT_GRAY : Color.WHITE;
