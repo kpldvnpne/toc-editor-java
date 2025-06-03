@@ -9,8 +9,7 @@ import javax.swing.tree.TreePath;
 import java.awt.Color;
 import java.awt.Component;
 
-// TODO: Use a top add child (+) and remove (x) button
-
+// TODO: Make the toc items draggable
 public class TocTree extends JTree {
     TocItem root;
     private TocItem selectedItem;
@@ -60,11 +59,13 @@ public class TocTree extends JTree {
     }
 
     public void addChildToSelectedItem() {
+        if (this.selectedItem == null) {
+            return;
+        }
+
         this.selectedItem.addChild();
 
         this.update();
-
-        // TODO: Expand on doing this
     }
 
     public void removeSelectedItem() {
