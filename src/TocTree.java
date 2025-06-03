@@ -208,11 +208,9 @@ public class TocTree extends JTree {
             itemToTransfer.removeFromParent(); // Needed, because could be re-added to the same parent
             destinationTocItem.addChild(itemToTransfer, insertIndex);
 
-            // Update tree succinctly
-            // destinationNode.insert(nodeToTransfer, insertIndex);
-
-            // Update tree now
-            tree.update(); // TODO: Causing issues, so might have to make use of DataModel instead
+            // Update tree precisely to avoid errors
+            destinationNode.insert(nodeToTransfer, insertIndex);
+            tree.updateUI();
 
             return true;
         }
