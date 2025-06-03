@@ -200,7 +200,7 @@ public class TocTree extends JTree {
             var destinationTocItem = (TocItem) destinationNode.getUserObject();
 
             var insertIndex = childIndex; // DropMode.INSERT
-            if (childIndex == 1) { // DropMode.ON
+            if (childIndex == -1) { // DropMode.ON
                 insertIndex = destinationTocItem.children.size();
             }
 
