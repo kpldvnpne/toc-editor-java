@@ -1,6 +1,5 @@
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
-import com.itextpdf.kernel.pdf.PdfWriter;
 
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -11,18 +10,20 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 public class Main {
+  public static JFileChooser fileChooser;
 
   private static TocItem tocItem = null;
   private static JPanel panel = null;
   private static JComponent editor = null;
 
-  private static void showTocFromFile(String filepath) {
+  private static void showTocFromFile(JLabel inputFileText) {
     // TODO: Update existing editor
+    var filepath = inputFileText.getText();
     try (var reader = new PdfReader(filepath); var document = new PdfDocument(reader)) {
       Main.panel.remove(editor);
 
       Main.tocItem = TocItem.fromPdfDocument(document);
-      Main.editor = new TocEditor(Main.tocItem);
+      Main.editor = new TocEditor(Main.tocItem, inputFileText);
 
       Main.panel.add(editor, 1); // TODO: Don't use index
     } catch (IOException exception) {
@@ -36,7 +37,7 @@ public class Main {
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     // File chooser
-    JFileChooser fileChooser = new JFileChooser();
+    fileChooser = new JFileChooser();
     var filter = new FileNameExtensionFilter("Only PDF Files", "pdf");
     fileChooser.setFileFilter(filter);
 
@@ -68,10 +69,6 @@ public class Main {
     Main.editor = TocEditor.getNoEditor();
     panel.add(editor);
 
-    // Add TOC button
-    JButton saveAsButton = new JButton("Save As");
-    panel.add(saveAsButton);
-
     inputButton.addActionListener((ActionEvent e) -> {
       var result = fileChooser.showOpenDialog(frame);
 
@@ -79,37 +76,7 @@ public class Main {
         String filepath = fileChooser.getSelectedFile().getAbsolutePath();
         inputFileText.setText(filepath);
 
-        showTocFromFile(filepath);
-      }
-    });
-
-    saveAsButton.addActionListener((ActionEvent e) -> {
-      if (Main.tocItem == null) {
-        showError("No TOC Found");
-        return;
-      }
-
-      if (inputFileText.getText().isBlank()) {
-        showError("You don't have input file selected");
-        return;
-      }
-
-      var result = fileChooser.showSaveDialog(frame);
-
-      if (result == JFileChooser.APPROVE_OPTION) {
-        String outputFilePath = fileChooser.getSelectedFile().getAbsolutePath();
-        String inputFilePath = inputFileText.getText();
-
-        if (outputFilePath.equals(inputFilePath)) {
-          showError("You can't save to the same file. Please select different file");
-          return;
-        }
-
-        if (addTOC(inputFilePath, outputFilePath, Main.tocItem)) {
-          showInfo("Successful");
-        } else {
-          showError("Could not edit TOC");
-        }
+        showTocFromFile(inputFileText);
       }
     });
 
@@ -121,51 +88,7 @@ public class Main {
 
 
     // TODO: Delete once done with Rendering
-    Main.showTocFromFile("/Users/kapildev/Downloads/toc_example_2.pdf");
-  }
-
-  private static void showError(String message) {
-    JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
-  }
-
-  private static void showInfo(String message) {
-    JOptionPane.showMessageDialog(null, message, "Info", JOptionPane.INFORMATION_MESSAGE);
-  }
-
-  private static boolean addTOC(String inputFilename, String outputFilename, TocItem tocItem) {
-    if (inputFilename.equals(outputFilename)) {
-      showError("Input and output should not be same file. Exiting");
-      return true;
-    }
-
-    try {
-      PdfReader reader = new PdfReader(inputFilename);
-      PdfWriter writer = new PdfWriter(outputFilename);
-
-      try(PdfDocument document = new PdfDocument(reader, writer)) {
-        var root = document.getOutlines(true);
-
-        // Remove every child
-        // TODO: Removing every outline does not work
-        // TODO: Check if this works with PDFs without an existing outline
-        while (root.getAllChildren().size() > 1) {
-          root.getAllChildren().get(0).removeOutline();
-        }
-
-        tocItem.addChildrenTo(root, document);
-
-        // TODO: Remove this
-        // Remove the first element, that we didn't remove because it does not work without it
-        root.getAllChildren().get(0).removeOutline();
-      }
-
-      return true;
-    } catch (Exception exception) {
-      System.out.println("Could not open the file");
-      exception.printStackTrace();
-
-      return false;
-    }
+    // Main.showTocFromFile("/Users/kapildev/Downloads/toc_example_2.pdf");
   }
 
   public static void main(String[] args) {
