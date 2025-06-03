@@ -170,16 +170,19 @@ public class TocEditor extends JPanel {
         var root = document.getOutlines(true);
 
         // Remove every child
-        // TODO: Removing every outline does not work
+        // TODO: Removing every outline does not work, so remove all except 1
         while (root.getAllChildren().size() > 1) {
           root.getAllChildren().get(0).removeOutline();
         }
 
+        var needToRemoveFirst = root.getAllChildren().size() == 1;
+
         tocItem.addChildrenTo(root, document);
 
         // TODO: Remove this
-        // Remove the first element, that we didn't remove because it does not work without it
-        root.getAllChildren().get(0).removeOutline();
+        // Remove the first element that we possibly didn't remove
+        if (needToRemoveFirst)
+          root.getAllChildren().get(0).removeOutline();
       }
 
       return true;
