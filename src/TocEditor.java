@@ -99,22 +99,22 @@ public class TocEditor extends JPanel {
     });
 
     // Add actions to buttons
-    editButton.addActionListener((e) -> {
+    editButton.addActionListener((_) -> {
       if (tree.editSelectedItem())
         this.enableSaveAsButton();
     });
 
-    addChildButton.addActionListener((e) -> {
+    addChildButton.addActionListener((_) -> {
       if (tree.addChildToSelectedItem())
         this.enableSaveAsButton();
     });
 
-    removeButton.addActionListener((e) -> {
+    removeButton.addActionListener((_) -> {
       if (tree.removeSelectedItem())
         this.enableSaveAsButton();
     });
 
-    saveAsButton.addActionListener((e) -> {
+    saveAsButton.addActionListener((_) -> {
       if (this.tocItem == null) {
         Dialog.showError("No TOC Found");
         return;

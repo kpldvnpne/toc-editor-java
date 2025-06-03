@@ -73,7 +73,7 @@ public class Main {
     Main.editor = TocEditor.getNoEditor();
     panel.add(editor);
 
-    inputButton.addActionListener((ActionEvent e) -> {
+    inputButton.addActionListener((ActionEvent _) -> {
       var result = fileChooser.showOpenDialog(frame);
 
       if (result == JFileChooser.APPROVE_OPTION) {
