@@ -4,6 +4,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -45,6 +46,9 @@ public class TocTree extends JTree {
 
             this.selectionListener.valueChanged(this.selectedItem);
         });
+
+        // Allow single selection only
+        this.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
     }
 
     private void populate() {
