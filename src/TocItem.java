@@ -107,6 +107,7 @@ class TocItem {
 
     private void removeChild(TocItem child) {
         this.children.remove(child);
+        child.parent = null;
     }
 
     public void addChildrenTo(PdfOutline root, PdfDocument document) {
