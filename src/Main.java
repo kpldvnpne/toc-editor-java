@@ -104,8 +104,11 @@ public class Main {
     });
 
     // Display the window
-    frame.setSize(new Dimension(800, 400));
+    frame.setSize(800, 400);
+
+    frame.setLocationRelativeTo(null);
     frame.setVisible(true);
+
 
     // TODO: Delete once done with Rendering
     Main.showTocFromFile("/Users/kapildev/Downloads/toc_example_2.pdf");
