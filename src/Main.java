@@ -5,6 +5,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -17,18 +18,29 @@ public class Main {
   private static JComponent editor = null;
 
   private static void showTocFromFile(JLabel inputFileText) {
-    // TODO: Update existing editor
     var filepath = inputFileText.getText();
     try (var reader = new PdfReader(filepath); var document = new PdfDocument(reader)) {
+      var indexOfEditor = Arrays.asList(Main.panel.getComponents()).indexOf(editor);
       Main.panel.remove(editor);
 
       Main.tocItem = TocItem.fromPdfDocument(document);
-      Main.editor = new TocEditor(Main.tocItem, inputFileText);
 
-      Main.panel.add(editor, 1); // TODO: Don't use index
+      var editor = new TocEditor(Main.tocItem, inputFileText);
+      updateEditor(editor);
     } catch (IOException exception) {
       System.out.println("Can't read the file");
     }
+  }
+
+  private static void updateEditor(JComponent newEditor) {
+    updateChild(Main.panel, Main.editor, newEditor);
+    Main.editor = newEditor;
+  }
+
+  private static void updateChild(JComponent parent, JComponent oldChild, JComponent newChild) {
+    var indexOfOldChild = Arrays.asList(parent.getComponents()).indexOf(oldChild);
+    parent.remove(oldChild);
+    parent.add(newChild, indexOfOldChild);
   }
 
   private static void createAndShowGUI() {
