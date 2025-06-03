@@ -47,6 +47,13 @@ class TocItem {
     }
 
     private static TocItem fromOutline(PdfOutline outline, PdfDocument document, TocItem parent) {
+        if (outline == null) {
+            // TODO: Solve this problem
+            Dialog.showInfo("The document does not have an existing outline. "
+                + "Currently, due to limitations of this software, no new outline can be added");
+            return TocItem.empty();
+        }
+
         var label = outline.getTitle();
         var pageNum = getPageNumber(outline, document);
 
@@ -63,6 +70,10 @@ class TocItem {
             .collect(Collectors.toList());
 
         return current;
+    }
+
+    private static TocItem empty() {
+        return new TocItem("Root", 0, null, null);
     }
 
     public TocItem(String label, int pageNum, TocItem parent, List<TocItem> children) {

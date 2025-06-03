@@ -17,7 +17,6 @@ public class TocEditor extends JPanel {
 
   public static TocEditor fromInputFile(String inputFilePath) {
     try (var reader = new PdfReader(inputFilePath); var document = new PdfDocument(reader)) {
-      // TODO: Handle a PDF without TOC
       var tocItem = TocItem.fromPdfDocument(document);
 
       return new TocEditor(tocItem, inputFilePath);
@@ -172,7 +171,6 @@ public class TocEditor extends JPanel {
 
         // Remove every child
         // TODO: Removing every outline does not work
-        // TODO: Check if this works with PDFs without an existing outline
         while (root.getAllChildren().size() > 1) {
           root.getAllChildren().get(0).removeOutline();
         }
