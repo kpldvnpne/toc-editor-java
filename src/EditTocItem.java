@@ -1,7 +1,7 @@
 import javax.swing.*;
 
 public class EditTocItem {
-   public static void showFor(TocItem tocItem) {
+   public static boolean showFor(TocItem tocItem) {
       JTextField labelInput = new JTextField(20);
       labelInput.setText(tocItem.label);
 
@@ -36,6 +36,10 @@ public class EditTocItem {
       if (result == JOptionPane.OK_OPTION) {
         tocItem.label = labelInput.getText();
         tocItem.pageNum = Integer.parseInt(pageNumInput.getText());
+
+        return true;
       }
+
+      return false;
    }
 }
