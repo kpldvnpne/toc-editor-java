@@ -58,19 +58,24 @@ public class TocTree extends JTree {
         this.populate();
     }
 
-    public void editSelectedItem() {
+    public boolean editSelectedItem() {
         if (this.selectedItem == null) {
-            return;
+            return false;
         }
 
-        EditTocItem.showFor(this.selectedItem);
+        // Update only when OK is pressed
+        if (EditTocItem.showFor(this.selectedItem)) {
+            this.update();
 
-        this.update();
+            return true;
+        }
+
+        return false;
     }
 
-    public void addChildToSelectedItem() {
+    public boolean addChildToSelectedItem() {
         if (this.selectedItem == null) {
-            return;
+            return false;
         }
 
         var child = new TocItem("New Label", this.selectedItem.pageNum, this.selectedItem, null);
@@ -78,16 +83,21 @@ public class TocTree extends JTree {
         // Edit using a dialog, add only when "OK" is pressed
         if (EditTocItem.showFor(child)) {
             this.selectedItem.addChild(child);
+            this.update();
+
+            return true;
         }
 
-        this.update();
+        return false;
     }
 
-    public void removeSelectedItem() {
+    public boolean removeSelectedItem() {
         this.selectedItem.removeFromParent();
         this.selectedItem = null;
 
         this.update();
+
+        return true;
     }
 
     public void addSelectionListener(SelectionListener listener) {

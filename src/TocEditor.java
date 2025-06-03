@@ -14,8 +14,9 @@ public class TocEditor extends JPanel {
     return noEditorPanel;
   }
 
-  TocItem tocItem;
+  private TocItem tocItem;
   private JLabel inputFileText;
+  private JButton saveAsButton;
 
   public TocEditor(TocItem tocItem, JLabel inputFileText) {
     super();
@@ -47,7 +48,6 @@ public class TocEditor extends JPanel {
     topRowPanel.add(Box.createHorizontalGlue());
     topRowPanel.add(buttonPanel);
 
-    // TODO: Allow deselection
     var tree = this.tocItem == null ? null : new TocTree(this.tocItem);
     var treeView = new JScrollPane(tree);
 
@@ -55,7 +55,8 @@ public class TocEditor extends JPanel {
     this.add(treeView);
 
     // Add TOC button
-    JButton saveAsButton = new JButton("Save As");
+    this.saveAsButton = new JButton("Save As");
+    this.disableSaveAsButton();
     this.add(saveAsButton);
 
     // Make the main panel column
@@ -72,15 +73,18 @@ public class TocEditor extends JPanel {
 
     // Add actions to buttons
     editButton.addActionListener((e) -> {
-      tree.editSelectedItem();
+      if (tree.editSelectedItem())
+        this.enableSaveAsButton();
     });
 
     addChildButton.addActionListener((e) -> {
-      tree.addChildToSelectedItem();
+      if (tree.addChildToSelectedItem())
+        this.enableSaveAsButton();
     });
 
     removeButton.addActionListener((e) -> {
-      tree.removeSelectedItem();
+      if (tree.removeSelectedItem())
+        this.enableSaveAsButton();
     });
 
     saveAsButton.addActionListener((e) -> {
@@ -109,11 +113,21 @@ public class TocEditor extends JPanel {
 
         if (addTOC(inputFilePath, outputFilePath, this.tocItem)) {
           Dialog.showInfo("Successful");
+
+          this.disableSaveAsButton();
         } else {
           Dialog.showError("Could not edit TOC");
         }
       }
     });
+  }
+
+  private void enableSaveAsButton() {
+    this.saveAsButton.setEnabled(true);
+  }
+
+  private void disableSaveAsButton() {
+    this.saveAsButton.setEnabled(false);
   }
 
   private static boolean addTOC(String inputFilename, String outputFilename, TocItem tocItem) {
