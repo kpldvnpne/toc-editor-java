@@ -91,7 +91,7 @@ public class TocTree extends JTree {
             return false;
         }
 
-        var child = new TocItem("New Label", this.selectedItem.pageNum, this.selectedItem, null);
+        var child = new TocItem("New Label", Math.max(this.selectedItem.pageNum, 1), this.selectedItem, null);
 
         // Edit using a dialog, add only when "OK" is pressed
         if (EditTocItem.showFor(child)) {
