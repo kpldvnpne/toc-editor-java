@@ -34,6 +34,7 @@ public class TocEditor extends JPanel {
     var label = new JLabel("Table of content");
 
     var buttonPanel = new JPanel();
+    buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
     var editButton = new JButton("Edit");
     var addChildButton = new JButton("Add Child");
     var removeButton = new JButton("Remove");
