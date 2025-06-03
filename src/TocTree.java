@@ -124,8 +124,13 @@ public class TocTree extends JTree {
             var pageNum = new JLabel("" + tocItem.pageNum);
 
             panel.add(label);
-            panel.add(Box.createHorizontalStrut(50));
-            panel.add(pageNum);
+
+            // Don't show pageNum for the root
+            if (row != 0) {
+                panel.add(Box.createHorizontalStrut(50));
+                panel.add(pageNum);
+            }
+
 
             return panel;
         }
