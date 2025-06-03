@@ -7,11 +7,13 @@ import javax.swing.tree.TreePath;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.util.EventListener;
 
 // TODO: Make the toc items draggable
 public class TocTree extends JTree {
     TocItem root;
     private TocItem selectedItem;
+    private SelectionListener selectionListener;
 
     public TocTree(TocItem root) {
         this.root = root;
@@ -40,6 +42,8 @@ public class TocTree extends JTree {
 
                 this.selectedItem = tocItem;
             }
+
+            this.selectionListener.valueChanged(this.selectedItem);
         });
     }
 
@@ -84,6 +88,14 @@ public class TocTree extends JTree {
         this.selectedItem = null;
 
         this.update();
+    }
+
+    public void addSelectionListener(SelectionListener listener) {
+        this.selectionListener = listener;
+    }
+
+    interface SelectionListener extends EventListener {
+        void valueChanged(TocItem tocItem);
     }
 
     public class LabelAndPageNumRenderer extends DefaultTreeCellRenderer {

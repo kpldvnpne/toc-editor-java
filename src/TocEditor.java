@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 import javax.swing.*;
 
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -37,12 +39,15 @@ public class TocEditor extends JPanel {
 
     var buttons = Arrays.asList(new JButton[] { editButton, addChildButton, removeButton });
 
+    // Add each button and disable
     buttons.stream().forEach(buttonPanel::add);
+    buttons.stream().forEach((button) -> button.setEnabled(false));
 
     topRowPanel.add(label);
     topRowPanel.add(Box.createHorizontalGlue());
     topRowPanel.add(buttonPanel);
 
+    // TODO: Allow deselection
     var tree = this.tocItem == null ? null : new TocTree(this.tocItem);
     var treeView = new JScrollPane(tree);
 
@@ -50,12 +55,20 @@ public class TocEditor extends JPanel {
     this.add(treeView);
 
     // Add TOC button
-    // TODO: Move to TOC Editor (Doing)
     JButton saveAsButton = new JButton("Save As");
     this.add(saveAsButton);
 
     // Make the main panel column
     this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+
+    // Add selection listenger
+    tree.addSelectionListener((TocItem tocItem) -> {
+      if (tocItem == null) {
+        buttons.stream().forEach((button) -> button.setEnabled(false));
+      } else {
+        buttons.stream().forEach((button) -> button.setEnabled(true));
+      }
+    });
 
     // Add actions to buttons
     editButton.addActionListener((e) -> {
