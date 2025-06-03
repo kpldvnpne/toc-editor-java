@@ -1,7 +1,7 @@
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.io.File;
+// import java.io.File;
 import java.util.Arrays;
 
 import javax.swing.*;
@@ -92,10 +92,10 @@ public class Main {
 
 
     // TODO: Delete once done with Rendering
-    var filepath = "/Users/kapildev/Downloads/toc_example.pdf";
-    inputFileText.setText(filepath);
-    fileChooser.setSelectedFile(new File(filepath));
-    Main.showTocFromFile(inputFileText);
+    // var filepath = "/Users/kapildev/Downloads/pdf_without_toc.pdf";
+    // inputFileText.setText(filepath);
+    // fileChooser.setSelectedFile(new File(filepath));
+    // Main.showTocFromFile(inputFileText);
   }
 
   public static void main(String[] args) {
