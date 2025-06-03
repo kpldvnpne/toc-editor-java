@@ -45,6 +45,9 @@ public class TocTree extends JTree {
 
             this.selectionListener.valueChanged(this.selectedItem);
         });
+
+        // Hide root node
+        this.setRootVisible(false);
     }
 
     private void populate() {
