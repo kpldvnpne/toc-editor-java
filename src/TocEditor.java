@@ -69,12 +69,21 @@ public class TocEditor extends JPanel {
     // Make the main panel column
     this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-    // Add selection listenger
+    // Add selection listener
     tree.addSelectionListener((TocItem tocItem) -> {
       if (tocItem == null) {
         buttons.stream().forEach((button) -> button.setEnabled(false));
       } else {
         buttons.stream().forEach((button) -> button.setEnabled(true));
+      }
+    });
+
+    // Add edited listener
+    tree.addEditListener((edited) -> {
+      if (edited) {
+        this.enableSaveAsButton();
+      } else {
+        this.disableSaveAsButton();
       }
     });
 

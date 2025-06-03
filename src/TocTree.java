@@ -18,6 +18,7 @@ public class TocTree extends JTree {
     TocItem root;
     private TocItem selectedItem;
     private SelectionListener selectionListener;
+    private EditListener editListener;
 
     public TocTree(TocItem root) {
         this.root = root;
@@ -120,6 +121,14 @@ public class TocTree extends JTree {
         void valueChanged(TocItem tocItem);
     }
 
+    public void addEditListener(EditListener listener) {
+        this.editListener = listener;
+    }
+
+    interface EditListener extends EventListener {
+        void edited(boolean edited);
+    }
+
     private class LabelAndPageNumRenderer extends DefaultTreeCellRenderer {
         @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
@@ -211,6 +220,7 @@ public class TocTree extends JTree {
             // Update tree precisely to avoid errors
             destinationNode.insert(nodeToTransfer, insertIndex);
             tree.updateUI();
+            tree.editListener.edited(true);
 
             return true;
         }
