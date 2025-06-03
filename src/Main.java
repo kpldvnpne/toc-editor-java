@@ -2,6 +2,8 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
 
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 
@@ -49,14 +51,18 @@ public class Main {
     panel.setBorder(padding);
 
     // Input Panel
-    JPanel inputPanel = new JPanel();
-    inputPanel.setLayout(new BoxLayout(inputPanel, BoxLayout.X_AXIS));
-    JButton inputButton = new JButton("Select Input Destination:");
-    inputPanel.add(inputButton);
-    JLabel inputFileText = new JLabel();
-    inputPanel.add(inputFileText);
+    JPanel inputContainer = new JPanel();
+    inputContainer.setLayout(new GridLayout(0, 1)); // Grid helps it fill the width
 
-    panel.add(inputPanel);
+    JPanel inputContainerInner = new JPanel(new FlowLayout(FlowLayout.LEADING)); // Flow Layout helps keep everything flexible
+    inputContainer.add(inputContainerInner);
+
+    JButton inputButton = new JButton("Select Input Destination:");
+    inputContainerInner.add(inputButton);
+    JLabel inputFileText = new JLabel();
+    inputContainerInner.add(inputFileText);
+
+    panel.add(inputContainer);
 
     // Tree
     Main.editor = TocEditor.getNoEditor();
