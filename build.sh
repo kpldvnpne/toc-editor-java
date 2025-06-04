@@ -17,4 +17,4 @@ itext_cp="$kernel:$io:$layout:$bouncy_castle_adapter"
 whole_cp="$itext_cp:$slf4j:$outline"
 # Class paths --- END
 
-javac -cp $whole_cp -d $OUT_DIR src/com/kapildev/toccreator/*.java
+javac -cp $whole_cp -d $OUT_DIR src/*.java
