@@ -14,10 +14,8 @@ io='lib/itext/io-9.2.0.jar'
 layout='lib/itext/layout-9.2.0'
 bouncy_castle_adapter='lib/itext/bouncy-castle-adapter-9.2.0'
 
-outline='lib/org-netbeans-swing-outline-RELEASE260.jar'
-
 itext_cp="$kernel:$io:$layout:$bouncy_castle_adapter"
-whole_cp="$itext_cp:$slf4j:$outline"
+whole_cp="$itext_cp:$slf4j"
 # Class paths --- END
 
 javac -cp $whole_cp -d $OUT_DIR src/*.java
