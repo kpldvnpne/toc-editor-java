@@ -133,7 +133,7 @@ public class TocTree extends JTree {
         @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded,
                 boolean leaf, int row, boolean hasFocus) {
-            // TODO: Make all of equal width
+            // TODO: Make all of equal width (Could be fixed with TreeTable, like Outline but too much hassle)
             var panel = new JPanel();
 
             var color = selected ? Color.LIGHT_GRAY : Color.WHITE;
