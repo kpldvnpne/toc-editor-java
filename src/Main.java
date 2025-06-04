@@ -37,7 +37,7 @@ public class Main {
 
   private static void createAndShowGUI() {
     // Create and setup the window
-    JFrame frame = new JFrame("TOC Editor");
+    JFrame frame = new JFrame("PDF's Table of Contents Editor");
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     // File chooser
