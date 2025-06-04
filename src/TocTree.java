@@ -213,6 +213,15 @@ public class TocTree extends JTree {
                 insertIndex = destinationTocItem.children.size();
             }
 
+            // If same parent, insertIndex should be less than one because it would now be removed from the parent
+            if (nodeToTransfer.getParent().equals(destinationNode)) {
+                var previousIndex = destinationTocItem.children.indexOf(nodeToTransfer.getUserObject());
+
+                if (previousIndex < insertIndex) {
+                    insertIndex -= 1;
+                }
+            }
+
             var itemToTransfer = (TocItem) nodeToTransfer.getUserObject();
             itemToTransfer.removeFromParent(); // Needed, because could be re-added to the same parent
             destinationTocItem.addChild(itemToTransfer, insertIndex);
