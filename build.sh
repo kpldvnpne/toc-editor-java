@@ -3,6 +3,9 @@
 
 OUT_DIR=bin
 
+# Remove existing output
+rm -rf $OUT_DIR/*
+
 # Class paths --- START
 slf4j='lib/slf4j-api-2.0.17.jar'
 
