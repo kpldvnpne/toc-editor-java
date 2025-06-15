@@ -2,6 +2,34 @@
 
 Do you have PDFs whose Table of Content (or Outlines) that you want to edit? If so, this is the right software for you.
 
+# Download
+
+Click [here](./executable/toc-editor.jar) to download the software. Then, once downloaded, run it by double clicking.
+
+**If you can't run the software**, you probably don't have Java Runetime Environment. [Click here to download one](https://www.azul.com/downloads/?version=java-24&package=jre#zulu).
+
+**If you are on MacOS**, you might see something like this:
+
+![Can't open in MacOS](screenshots/cant-open-mac.png)
+
+In order to fix this, open Terminal.
+
+![Terminal Icon](screenshots/terminal-icon.png)
+
+Go to the `Downloads` folder with the following command:
+
+```
+cd ~/Downloads
+```
+
+Then, run the following command:
+
+```
+xattr -c ./toc-editor.jar
+```
+
+Now, try to open toc-editor.jar again. It should succeed now.
+
 # How to use?
 
 1. When you first open the application, you will see this screen:
