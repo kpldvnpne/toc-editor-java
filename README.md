@@ -4,10 +4,19 @@ Do you have PDFs whose Table of Content (or Outlines) that you want to edit? If 
 
 # Download
 
-Click [here](./executable/toc-editor.jar) to download the software. Then, once downloaded, run it by double clicking.
+You have two options: jar file or installer.
 
-**If you can't run the software**, you probably don't have Java Runetime Environment. [Click here to download one](https://www.azul.com/downloads/?version=java-24&package=jre#zulu).
+## JAR file
+Click [here](./build/jar/TocEditor.jar) to download the software. Then, once downloaded, run it by double clicking.
 
+**If you can't run the software**, you probably don't have Java Runtime Environment. [Click here to download one](https://www.azul.com/downloads/?version=java-24&package=jre#zulu).
+
+## Installer
+**If you are on MacOS**, you might prefer an installer (dmg). Click [here](./build/exec/PDF%20Table%20of%20Content%20Editor-1.0.dmg) to download one.
+
+**For others**, I have yet to generate an installer.
+
+## Troubleshotting
 **If you are on MacOS**, you might see something like this:
 
 ![Can't open in MacOS](screenshots/cant-open-mac.png)
