@@ -82,3 +82,8 @@ Now, try to open toc-editor.jar again. It should succeed now.
       ![alt text](screenshots/image-9.png)
 
 5. After you are done, don't forget to press **Save As** button. You will be asked to select the output folder and output file name.
+
+# TODO:
+[ ] To make this app accept programs from right click, this is a good starting point: https://stackoverflow.com/questions/77646000/open-a-file-with-java-application-on-macos
+
+
