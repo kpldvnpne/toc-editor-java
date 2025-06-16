@@ -18,4 +18,4 @@ itext_cp="$kernel:$io:$layout:$bouncy_castle_adapter"
 whole_cp="$itext_cp:$slf4j"
 # Class paths --- END
 
-javac -cp $whole_cp -d $OUT_DIR src/*.java
+javac -sourcepath src -classpath $whole_cp -d $OUT_DIR src/Main.java
