@@ -7,14 +7,18 @@ OUT_DIR=build/classes
 rm -rf $OUT_DIR/*
 
 # Class paths --- START
+# iText only
+bouncy_castle_adapter='lib/itext/bouncy-castle-adapter-9.2.0'
+commons='lib/itext/commons-9.2.0.jar'
+io='lib/itext/io-9.2.0.jar'
+kernel='lib/itext/kernel-9.2.0.jar'
+layout='lib/itext/layout-9.2.0'
+
+# iText dependencies
 slf4j='lib/slf4j-api-2.0.17.jar'
 
-kernel='lib/itext/kernel-9.2.0.jar'
-io='lib/itext/io-9.2.0.jar'
-layout='lib/itext/layout-9.2.0'
-bouncy_castle_adapter='lib/itext/bouncy-castle-adapter-9.2.0'
-
-itext_cp="$kernel:$io:$layout:$bouncy_castle_adapter"
+# Combine
+itext_cp="$kernel:$io:$layout:$bouncy_castle_adapter:$commons"
 whole_cp="$itext_cp:$slf4j"
 # Class paths --- END
 
