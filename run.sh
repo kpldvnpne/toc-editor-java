@@ -7,11 +7,11 @@ rm -rf $OUT_DIR/*
 
 # Class paths --- START
 # iText only
-bouncy_castle_adapter='lib/itext/bouncy-castle-adapter-9.2.0'
+bouncy_castle_adapter='lib/itext/bouncy-castle-adapter-9.2.0.jar'
 commons='lib/itext/commons-9.2.0.jar'
 io='lib/itext/io-9.2.0.jar'
 kernel='lib/itext/kernel-9.2.0.jar'
-layout='lib/itext/layout-9.2.0'
+layout='lib/itext/layout-9.2.0.jar'
 
 # iText dependencies
 slf4j='lib/slf4j-api-2.0.17.jar'
