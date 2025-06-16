@@ -2,3 +2,4 @@
 iText-Core-9.2.0-only-jars.zip
 **/build/*
 !jar/
+!exec/
