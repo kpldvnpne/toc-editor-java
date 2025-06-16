@@ -1,1 +1,1 @@
-jar cf bin/try.jar -C bin/ .
+jar cf build/try.jar -C build/ .
