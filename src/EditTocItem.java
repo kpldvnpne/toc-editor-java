@@ -3,6 +3,7 @@ import javax.swing.*;
 public class EditTocItem {
    public static boolean showFor(TocItem tocItem) {
       JTextField labelInput = new JTextField(20);
+      labelInput.addAncestorListener(new RequestFocusListener());
       labelInput.setText(tocItem.label);
 
       JTextField pageNumInput = new JTextField(4);
