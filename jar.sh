@@ -48,7 +48,6 @@ jar cfm build/jar/TocEditor.jar manifest.mf -C $OUT_DIR . -C build/lib-extracted
 jpackage --input build/jar  --main-jar TocEditor.jar --type dmg \
   --description "Allows you to edit the table of content of any PDFs" \
   --name "PDF Table of Content Editor" --dest build/exec --app-version 1.0 \
-  # --file-associations FApdf.properties \
   --icon 'resources/PDF Table of Content Editor.icns'
   # --resource-dir 'resources'
-
+  # --file-associations FApdf.properties \
